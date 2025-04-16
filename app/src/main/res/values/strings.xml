@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Vinyls</string>
+    <string name="navigation_drawer_open">Open Navigation</string>
+    <string name="navigation_drawer_close">Close Navigation</string>
+    <string name="continue_login">Continue</string>
+    <string name="terms">By clicking continue, you agree to our Terms of Service and Privacy Policy</string>
 </resources>
