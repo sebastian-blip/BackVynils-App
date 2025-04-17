@@ -1,5 +1,5 @@
 package com.example.vinyls
-
+import com.example.vinyls.ui.screens.CrearAlbumScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,28 +20,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             VinylsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    CrearAlbumScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun CrearAlbumScreenPreview() {
     VinylsTheme {
-        Greeting("Android")
+        CrearAlbumScreen()
     }
 }
