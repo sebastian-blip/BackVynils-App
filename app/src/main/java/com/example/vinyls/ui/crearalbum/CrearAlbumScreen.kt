@@ -1,5 +1,7 @@
-package com.example.vinyls.ui.screens
+package com.example.vinyls.ui.crearalbum
 
+import com.example.vinyls.R
+import com.example.vinyls.ui.crearalbum.CrearAlbumViewModelFake
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,10 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.vinyls.R
 
 @Composable
-fun CrearAlbumScreen() {
+fun CrearAlbumScreen(viewModelAlbum: CrearAlbumViewModelFake = CrearAlbumViewModelFake()) {
     var nombre by remember { mutableStateOf("") }
     var artista by remember { mutableStateOf("") }
     var biografia by remember { mutableStateOf("") }
@@ -95,6 +96,7 @@ fun CrearAlbumScreen() {
         // Botón: Continuar
         Button(
             onClick = {
+                viewModelAlbum.guardarAlbum(nombre, artista, biografia)
                 println("Álbum guardado: $nombre, $artista, $biografia")
             },
             modifier = Modifier.fillMaxWidth(),
