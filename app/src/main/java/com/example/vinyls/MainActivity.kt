@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.vinyls.ui.crearalbum.CrearAlbumScreen
+import com.example.vinyls.ui.crearpremio.CrearPremioScreen
 import com.example.vinyls.ui.theme.VinylsTheme
+
 
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +19,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VinylsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
-                    CrearAlbumScreen()
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    //CrearAlbumScreen()
+                    //CrearPremioScreen()
                 }
             }
         }
     }
-
-
 }
