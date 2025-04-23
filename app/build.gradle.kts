@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.vinyls"
-    compileSdk = 35
+    compileSdk = 35 
 
     defaultConfig {
         applicationId = "com.example.vinyls"
