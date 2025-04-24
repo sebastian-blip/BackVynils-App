@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             VinylsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     //CrearAlbumScreen()
-                    //CrearPremioScreen()
+                    CrearPremioScreen()
                 }
             }
         }
