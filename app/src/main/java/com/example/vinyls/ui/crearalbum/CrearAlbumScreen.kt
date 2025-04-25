@@ -29,6 +29,9 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import coil.compose.AsyncImage
+import androidx.compose.ui.draw.clip
+
 
 
 @Composable
@@ -73,29 +76,32 @@ fun CrearAlbumScreen() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Surface(
-                    modifier = Modifier.size(220.dp),
-                    shape = CircleShape,
-                    color = Color.White,
-                    shadowElevation = 4.dp
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_upload),
-                            contentDescription = "Portada del álbum",
-                            modifier = Modifier.size(100.dp)
-                        )
-                    }
-                }
+                AsyncImage(
+                    model = viewModel.cover,
+                    contentDescription = "Portada del álbum",
+                    modifier = Modifier
+                        .size(220.dp)
+                        .clip(CircleShape),
+                    placeholder = painterResource(id = R.drawable.ic_upload),
+                    error = painterResource(id = R.drawable.ic_upload)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = viewModel.nombre,
                     onValueChange = { viewModel.nombre = it },
-                    label = { Text("Nombre") },
+                    label = { Text("Nombre")},
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors()
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White,
+                        cursorColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
 
                 OutlinedTextField(
@@ -103,7 +109,15 @@ fun CrearAlbumScreen() {
                     onValueChange = { viewModel.cover = it },
                     label = { Text("URL de la portada") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors()
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White,
+                        cursorColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
 
                 OutlinedTextField(
@@ -111,7 +125,15 @@ fun CrearAlbumScreen() {
                     onValueChange = { viewModel.releaseDate = it },
                     label = { Text("Fecha de lanzamiento (YYYY-MM-DDTHH:MM:SS-05:00)") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors()
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White,
+                        cursorColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
 
                 OutlinedTextField(
@@ -119,7 +141,15 @@ fun CrearAlbumScreen() {
                     onValueChange = { viewModel.descripcion = it },
                     label = { Text("Descripción") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors()
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White,
+                        cursorColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray
+                    )
                 )
 
 
@@ -140,7 +170,15 @@ fun CrearAlbumScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { expandedGen = !expandedGen },
-                        colors = OutlinedTextFieldDefaults.colors()
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.White,
+                            cursorColor = Color.White,
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.Gray
+                        )
                     )
 
                     DropdownMenu(
@@ -177,7 +215,15 @@ fun CrearAlbumScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
-                        colors = OutlinedTextFieldDefaults.colors()
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.White,
+                            cursorColor = Color.White,
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.Gray
+                        )
                     )
 
                     DropdownMenu(

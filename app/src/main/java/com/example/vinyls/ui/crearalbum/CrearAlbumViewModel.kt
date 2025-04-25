@@ -22,20 +22,6 @@ class CrearAlbumViewModel(application: Application) : AndroidViewModel(applicati
     var recordLabel by mutableStateOf("")
 
 
-    fun formatearFecha(fecha: String): String {
-        return try {
-            val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date = parser.parse(fecha)
-
-            // Este formateador genera el formato esperado por el backend
-            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
-            formatter.timeZone = TimeZone.getTimeZone("GMT-5") // o ajusta a tu zona horaria
-            formatter.format(date!!)
-        } catch (e: Exception) {
-            fecha // Si falla el formato, se devuelve lo mismo
-        }
-    }
-
 
     fun crearAlbum(
         onSuccess: () -> Unit = {},
