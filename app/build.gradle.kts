@@ -40,6 +40,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeBom.get()
+    }
 }
 
 dependencies {
@@ -52,12 +56,15 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.constraintlayout)
 
-    // Compose BOM y componentes
+    // Jetpack Compose BOM y componentes
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Navigation Compose ✅
+    implementation(libs.androidx.navigation.compose)
 
     // Testing
     testImplementation(libs.junit)
