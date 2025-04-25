@@ -265,6 +265,18 @@ fun CrearAlbumScreen() {
                 ) {
                     Text("Crear Álbum", color = Color.White)
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "← Volver a lista de álbumes",
+                    color = Color(0xFFFF6B6B),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .clickable {
+                            // aqui navController.navigate("nombrepantallaalbumnes")
+                        }
+                )
             }
         }
     }
