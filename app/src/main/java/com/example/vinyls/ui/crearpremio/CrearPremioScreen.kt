@@ -31,6 +31,7 @@ fun CrearPremioScreen() {
 
     var nombreError by remember { mutableStateOf(false) }
     var descripcionError by remember { mutableStateOf(false) }
+    var organizacionError by remember { mutableStateOf(false) }
 
 
     Scaffold(
@@ -116,8 +117,14 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.organizacion,
-                    onValueChange = { viewModel.organizacion = it },
+                    onValueChange = { viewModel.organizacion = it
+                                      organizacionError = false
+                    },
                     label = { Text("Organización") },
+                    isError = organizacionError,
+                    supportingText = {
+                        if (organizacionError) Text("La organización no puede estar vacía", color = Color.Red)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -134,11 +141,13 @@ fun CrearPremioScreen() {
                     onClick = {
                         val nombreVacio = viewModel.nombre.isBlank()
                         val descripcionVacia = viewModel.descripcion.isBlank()
+                        val organizacionVacia = viewModel.organizacion.isBlank()
 
                         nombreError = nombreVacio
                         descripcionError = descripcionVacia
+                        organizacionError = organizacionVacia
 
-                        if (!nombreVacio && !descripcionVacia) {
+                        if (!nombreVacio && !descripcionVacia && !organizacionVacia) {
                             viewModel.crearPremio(
                                 onSuccess = {
                                     scope.launch {
