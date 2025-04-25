@@ -30,6 +30,8 @@ fun CrearPremioScreen() {
     val scope = rememberCoroutineScope()
 
     var nombreError by remember { mutableStateOf(false) }
+    var descripcionError by remember { mutableStateOf(false) }
+
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -95,8 +97,13 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it },
+                    onValueChange = { viewModel.descripcion = it
+                                      descripcionError = false},
                     label = { Text("Descripción") },
+                    isError = descripcionError,
+                    supportingText = {
+                        if (descripcionError) Text("La descripción no puede estar vacía", color = Color.Red)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -125,9 +132,13 @@ fun CrearPremioScreen() {
 
                 Button(
                     onClick = {
-                        if (viewModel.nombre.isBlank()) {
-                            nombreError = true
-                        } else {
+                        val nombreVacio = viewModel.nombre.isBlank()
+                        val descripcionVacia = viewModel.descripcion.isBlank()
+
+                        nombreError = nombreVacio
+                        descripcionError = descripcionVacia
+
+                        if (!nombreVacio && !descripcionVacia) {
                             viewModel.crearPremio(
                                 onSuccess = {
                                     scope.launch {
