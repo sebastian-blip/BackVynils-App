@@ -40,13 +40,13 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("home") {
-                            HomeScreen() // 🔜 Cuando esté el Home real de tu compañera
+                            HomeScreen()
                         }
                         composable("crearAlbum") {
-                            CrearAlbumScreen() // ✅ De tu compañero
+                            CrearAlbumScreen()
                         }
                         composable("crearPremio") {
-                            CrearPremioScreen() // ✅ También de tu compañero
+                            CrearPremioScreen()
                         }
                     }
                 }
