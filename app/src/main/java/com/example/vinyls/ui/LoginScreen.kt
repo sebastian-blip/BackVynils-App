@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +28,8 @@ fun LoginScreen(
     onContinueClick: () -> Unit,
     loginViewModel: LoginViewModel = viewModel()
 ) {
+    var email by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,18 +61,28 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Box(
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            singleLine = true,
             modifier = Modifier
                 .width(300.dp)
-                .height(35.dp)
-                .background(Color.White, RoundedCornerShape(10.dp))
+                .background(Color.White, RoundedCornerShape(10.dp)),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                cursorColor = Color.Black
+            )
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(
             onClick = {
-                loginViewModel.login() // ✅ Usamos la función correcta
+                loginViewModel.login()
                 onContinueClick()
             },
             modifier = Modifier
