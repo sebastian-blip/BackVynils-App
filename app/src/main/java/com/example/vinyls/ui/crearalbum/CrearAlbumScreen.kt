@@ -31,7 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import coil.compose.AsyncImage
 import androidx.compose.ui.draw.clip
-
+import androidx.compose.ui.text.font.FontStyle
 
 
 @Composable
@@ -40,6 +40,10 @@ fun CrearAlbumScreen() {
     val opcionesRecordLabel = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
     var expandedGen by remember { mutableStateOf(false) }
     val opcionesGen = listOf("Classical", "Salsa", "Rock", "Folk")
+    var nombreError by remember { mutableStateOf(false) }
+    var nombreObligatorioError by remember { mutableStateOf(false) }
+
+
 
     val context = LocalContext.current
     val viewModel: CrearAlbumViewModel = viewModel(
@@ -90,9 +94,33 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.nombre,
-                    onValueChange = { viewModel.nombre = it },
+                    onValueChange = {
+                        viewModel.nombre = it
+                        nombreError = it.length > 50
+                        nombreObligatorioError = it.trim().isEmpty()
+                    },
                     label = { Text("Nombre")},
-                    modifier = Modifier.fillMaxWidth(),
+                    isError = nombreError || nombreObligatorioError,
+                    supportingText = {
+                        if (nombreObligatorioError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (nombreError) {
+                                Text(
+                                text = "El nombre supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
