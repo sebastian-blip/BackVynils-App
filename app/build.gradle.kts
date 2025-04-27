@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.vinyls"
-    compileSdk = 35
+    compileSdk = 35 
 
     defaultConfig {
         applicationId = "com.example.vinyls"
@@ -57,5 +57,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.volley)
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.navigation.compose)
+
+
 
 }
