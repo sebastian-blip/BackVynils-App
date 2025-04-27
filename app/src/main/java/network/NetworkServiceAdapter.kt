@@ -10,7 +10,7 @@ import org.json.JSONObject
 class NetworkServiceAdapter private constructor(context: Context) {
 
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3000/"
+        const val BASE_URL = "https://backvynils-q6yc.onrender.com/"
         private var instance: NetworkServiceAdapter? = null
 
         fun getInstance(context: Context): NetworkServiceAdapter =
@@ -43,6 +43,23 @@ class NetworkServiceAdapter private constructor(context: Context) {
 
         requestQueue.add(request)
     }
+
+    fun postAlbum(
+        album: JSONObject,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val request = JsonObjectRequest(
+            Request.Method.POST,
+            BASE_URL + "albums",
+            album,
+            { response -> onSuccess() },
+            { error -> onError(error) }
+        )
+
+        requestQueue.add(request)
+    }
+
 
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)

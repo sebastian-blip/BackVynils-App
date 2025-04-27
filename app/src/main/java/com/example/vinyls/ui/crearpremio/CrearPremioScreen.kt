@@ -29,6 +29,11 @@ fun CrearPremioScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    var nombreError by remember { mutableStateOf(false) }
+    var descripcionError by remember { mutableStateOf(false) }
+    var organizacionError by remember { mutableStateOf(false) }
+
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         containerColor = Color.Black,
@@ -73,8 +78,14 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.nombre,
-                    onValueChange = { viewModel.nombre = it },
+                    onValueChange = { viewModel.nombre = it
+                                      nombreError = false
+                    },
                     label = { Text("Nombre") },
+                    isError = nombreError,
+                    supportingText = {
+                        if (nombreError) Text("El nombre no puede estar vacío", color = Color.Red)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -87,8 +98,13 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it },
+                    onValueChange = { viewModel.descripcion = it
+                                      descripcionError = false},
                     label = { Text("Descripción") },
+                    isError = descripcionError,
+                    supportingText = {
+                        if (descripcionError) Text("La descripción no puede estar vacía", color = Color.Red)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -101,8 +117,14 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.organizacion,
-                    onValueChange = { viewModel.organizacion = it },
+                    onValueChange = { viewModel.organizacion = it
+                                      organizacionError = false
+                    },
                     label = { Text("Organización") },
+                    isError = organizacionError,
+                    supportingText = {
+                        if (organizacionError) Text("La organización no puede estar vacía", color = Color.Red)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -117,19 +139,29 @@ fun CrearPremioScreen() {
 
                 Button(
                     onClick = {
-                        viewModel.crearPremio(
-                            onSuccess = {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("🎉 Premio creado exitosamente")
+                        val nombreVacio = viewModel.nombre.isBlank()
+                        val descripcionVacia = viewModel.descripcion.isBlank()
+                        val organizacionVacia = viewModel.organizacion.isBlank()
+
+                        nombreError = nombreVacio
+                        descripcionError = descripcionVacia
+                        organizacionError = organizacionVacia
+
+                        if (!nombreVacio && !descripcionVacia && !organizacionVacia) {
+                            viewModel.crearPremio(
+                                onSuccess = {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar("🎉 Premio creado exitosamente")
+                                    }
+                                },
+                                onError = {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar("❌ Error: ${it.message}")
+                                    }
                                 }
-                            },
-                            onError = {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("❌ Error: ${it.message}")
-                                }
-                            }
-                        )
-                    },
+                            )
+                        }
+                              },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
                     modifier = Modifier.fillMaxWidth()
                 ) {

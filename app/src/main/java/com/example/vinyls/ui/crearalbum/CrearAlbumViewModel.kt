@@ -1,31 +1,53 @@
 package com.example.vinyls.ui.crearalbum
 
-import com.example.vinyls.ui.data.AlbumRepositoryFake
-import com.example.vinyls.ui.model.Album
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.example.vinyls.repositories.AlbumRepository
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class CrearAlbumViewModelFake(
-    private val repository: AlbumRepositoryFake = AlbumRepositoryFake()
-) : ViewModel() {
+class CrearAlbumViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _estado = mutableStateOf("")
-    val estado: State<String> = _estado
+    private val albumRepository = AlbumRepository(application)
 
-    fun guardarAlbum(nombre: String, artista: String, biografia: String) {
-        val album = Album(nombre, artista, biografia)
+    var nombre by mutableStateOf("")
+    var cover by mutableStateOf("")
+    var releaseDate by mutableStateOf("")
+    var descripcion by mutableStateOf("")
+    var genre by mutableStateOf("")
+    var recordLabel by mutableStateOf("")
 
-        viewModelScope.launch {
-            try {
-                repository.crearAlbum(album)
-                _estado.value = "Álbum guardado correctamente"
-            } catch (e: Exception) {
-                _estado.value = "Error al guardar álbum"
-            }
+
+
+    fun crearAlbum(
+        onSuccess: () -> Unit = {},
+        onError: (Exception) -> Unit = {}
+    ) {
+        if (nombre.isBlank() || cover.isBlank() || releaseDate.isBlank() || descripcion.isBlank() || genre.isBlank() || recordLabel.isBlank()) {
+            onError(Exception("Todos los campos son obligatorios"))
+            return
         }
+
+        albumRepository.crearAlbum(
+            nombre,
+            cover,
+            releaseDate,
+            descripcion,
+            genre,
+            recordLabel,
+            onSuccess = {
+                println("Álbum creado exitosamente")
+                onSuccess()
+            },
+            onError = {
+                println("Error al crear el álbum: ${it.message}")
+                onError(it)
+            }
+        )
     }
 }
+
