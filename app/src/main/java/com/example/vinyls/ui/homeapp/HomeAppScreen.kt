@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.layout.ContentScale
@@ -24,20 +23,31 @@ import androidx.compose.ui.unit.dp
 import com.example.vinyls.R
 
 
-@Composable
 
-fun HomeAppScreen(){
+@Composable
+fun HomeAppScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .padding(16.dp)
-    )
-    {
+    ) {
         HomeHeader()
+        Spacer(modifier = Modifier.height(3.dp))
         SearchBar()
-        Spacer(modifier = Modifier.height(24.dp))
-        ArtistCarousel()
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            ArtistCarousel()
+            Spacer(modifier = Modifier.height(3.dp))
+            AlbumCarousel()
+            Spacer(modifier = Modifier.height(3.dp))
+            AwardsCarousel()
+        }
     }
 }
 
@@ -54,15 +64,15 @@ fun HomeHeader( ) {
             contentDescription = "Logo de Vinyls",
             modifier = Modifier
                 .height(90.dp)
-                .padding(16.dp)
+                .padding(10.dp)
         )
 
         Image(
             painter = painterResource(id = R.drawable.menu_icon),
             contentDescription = "Imágen menú",
             modifier = Modifier
-                .height(120.dp)
-                .padding(16.dp)
+                .height(80.dp)
+                .padding(10.dp)
         )
     }
 }
@@ -79,7 +89,7 @@ fun SearchBar(){
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar") },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(8.dp)
             .clip(RoundedCornerShape(12.dp)),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.White,
@@ -99,34 +109,58 @@ fun SearchBar(){
 
 fun ArtistCarousel(){
     SectionTitle(title = "Artistas")
+    Spacer(modifier = Modifier.height(6.dp))
     ArtistList()
 }
 
 @Composable
-fun SectionTitle(title: String, showAddIcon: Boolean = false, onArrowClick: (() -> Unit)? = null, onAddClick: (() -> Unit)? = null) {
+
+fun AlbumCarousel(){
+    SectionTitle(title = "Albumes")
+    Spacer(modifier = Modifier.height(6.dp))
+    AlbumList()
+}
+
+@Composable
+
+fun AwardsCarousel(){
+    SectionTitle(title = "Premios")
+    Spacer(modifier = Modifier.height(6.dp))
+    AwardsList()
+}
+
+@Composable
+fun SectionTitle(
+    title: String,
+    showAddIcon: Boolean = true,
+    onAddClick: (() -> Unit)? = null
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
-        Text(title, color = Color.White, style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = title,
+            color = Color.White,
+            style = MaterialTheme.typography.titleLarge
+        )
         if (showAddIcon) {
-            IconButton(onClick = { onAddClick?.invoke() }) {
-                Icon(Icons.Default.Add, contentDescription = "Agregar", tint = Color.Red)
+            IconButton(
+                onClick = { onAddClick?.invoke() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Agregar",
+                    tint = Color.Red,
+                    modifier = Modifier.size(32.dp)
+                )
             }
-        } else if (onArrowClick != null) {
-            Icon(
-                imageVector = Icons.Filled.CheckCircle,
-                contentDescription = "Ver más",
-                tint = Color.Red,
-                modifier = Modifier
-                    .background(Color.White, shape = CircleShape)
-                    .padding(8.dp)
-                    .clickable { onArrowClick.invoke() }
-            )
         }
     }
 }
+
 
 @Composable
 fun ArtistList() {
@@ -149,7 +183,7 @@ fun ArtistList() {
                     color = Color.White,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
-                        .width(74.dp)
+                        .width(78.dp)
                         .padding(horizontal = 4.dp),
                     maxLines = 2,
                     textAlign = TextAlign.Center
@@ -163,14 +197,14 @@ fun ArtistList() {
 fun CircleAvatar(imageResId: Int) {
     Box(
         modifier = Modifier
-            .size(74.dp)
+            .size(78.dp)
             .background(Color.Gray, shape = CircleShape)
     ) {
         Image(
             painter = painterResource(id = imageResId),
             contentDescription = "Avatar",
             modifier = Modifier
-                .size(74.dp)
+                .size(78.dp)
                 .clip(CircleShape)
                 .align(Alignment.Center),
             contentScale = ContentScale.Crop
@@ -183,3 +217,87 @@ data class Avatar(
     val name: String,
     val imageResId: Int
 )
+
+data class AvatarAlbum(
+    val name: String,
+    val imageResId: Int,
+    val album_artist: String
+)
+
+@Composable
+fun AlbumList() {
+    val avatarsAlbum = listOf(
+        AvatarAlbum("Abbey Road", R.drawable.avatar_album_1, "The Beatles"),
+        AvatarAlbum("Kind of Blue", R.drawable.avatar_album_2, "Miles Davis")
+    )
+    LazyRow {
+        items(avatarsAlbum) { album ->
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.padding(end = 36.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(150.dp)
+                        .background(Color.Gray)
+                ){
+                    Image(
+                        painter = painterResource(id = album.imageResId),
+                        contentDescription = "Avatar_album",
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentScale = ContentScale.Crop
+
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = album.name,
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    textAlign = TextAlign.Left
+                )
+                Text(
+                    text = album.album_artist,
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    textAlign = TextAlign.Left // Alineamos a la izquierda
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun AwardsList() {
+    val avatarsAwards = listOf(
+        Avatar("Mejor colaboración", R.drawable.avatar_premios_1),
+        Avatar("Artista más escuchado", R.drawable.avatar_premios_2),
+        Avatar("Artista Revelación", R.drawable.avatar_premios_3),
+        Avatar("Artista del año", R.drawable.avatar_premios_4)
+    )
+    LazyRow {
+        items(avatarsAwards) { award ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(end = 16.dp)
+            ) {
+                CircleAvatar(imageResId = award.imageResId)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = award.name,
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .width(78.dp)
+                        .padding(horizontal = 4.dp),
+                    maxLines = 3,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
