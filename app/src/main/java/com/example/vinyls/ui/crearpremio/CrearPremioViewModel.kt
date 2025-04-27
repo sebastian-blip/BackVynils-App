@@ -31,7 +31,6 @@ class CrearPremioViewModel(application: Application) : AndroidViewModel(applicat
             onError(Exception("Todos los campos son obligatorios"))
             return
         }
-
         premioRepository.crearPremio(
             nombre,
             descripcion,
