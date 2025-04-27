@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.vinyls.ui.crearalbum.CrearAlbumScreen
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
@@ -35,7 +36,10 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("home") {
-                            HomeAppScreen()
+                            HomeAppScreen(navController)
+                        }
+                        composable("crear_album") {
+                            CrearAlbumScreen(navController) // tu pantalla de crear álbum
                         }
                     }
                 }

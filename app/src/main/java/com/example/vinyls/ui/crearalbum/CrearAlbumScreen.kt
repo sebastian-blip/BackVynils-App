@@ -32,10 +32,11 @@ import androidx.compose.material3.IconButton
 import coil.compose.AsyncImage
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
+import androidx.navigation.NavController
 
 
 @Composable
-fun CrearAlbumScreen() {
+fun CrearAlbumScreen(navController: NavController) {
     var expanded by remember { mutableStateOf(false) }
     val opcionesRecordLabel = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
     var expandedGen by remember { mutableStateOf(false) }
@@ -46,11 +47,6 @@ fun CrearAlbumScreen() {
     var descripcionObligatoriaError by remember { mutableStateOf(false) }
     var URLObligatoriaError by remember { mutableStateOf(false) }
     var URLError by remember { mutableStateOf(false) }
-
-
-
-
-
 
     val context = LocalContext.current
     val viewModel: CrearAlbumViewModel = viewModel(

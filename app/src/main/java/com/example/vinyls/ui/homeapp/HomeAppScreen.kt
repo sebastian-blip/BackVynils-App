@@ -21,11 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.vinyls.R
+import androidx.navigation.NavController
+
 
 
 
 @Composable
-fun HomeAppScreen() {
+fun HomeAppScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +46,7 @@ fun HomeAppScreen() {
         ) {
             ArtistCarousel()
             Spacer(modifier = Modifier.height(3.dp))
-            AlbumCarousel()
+            AlbumCarousel(navController)
             Spacer(modifier = Modifier.height(3.dp))
             AwardsCarousel()
         }
@@ -115,8 +117,13 @@ fun ArtistCarousel(){
 
 @Composable
 
-fun AlbumCarousel(){
-    SectionTitle(title = "Albumes")
+fun AlbumCarousel(navController: NavController){
+    SectionTitle(
+        title = "Albumes",
+        onAddClick = {
+            navController.navigate("crear_album")
+        }
+    )
     Spacer(modifier = Modifier.height(6.dp))
     AlbumList()
 }
