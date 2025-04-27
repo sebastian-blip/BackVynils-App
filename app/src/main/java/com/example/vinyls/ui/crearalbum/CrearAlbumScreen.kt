@@ -42,6 +42,13 @@ fun CrearAlbumScreen() {
     val opcionesGen = listOf("Classical", "Salsa", "Rock", "Folk")
     var nombreError by remember { mutableStateOf(false) }
     var nombreObligatorioError by remember { mutableStateOf(false) }
+    var descripcionError by remember { mutableStateOf(false) }
+    var descripcionObligatoriaError by remember { mutableStateOf(false) }
+    var URLObligatoriaError by remember { mutableStateOf(false) }
+    var URLError by remember { mutableStateOf(false) }
+
+
+
 
 
 
@@ -96,8 +103,8 @@ fun CrearAlbumScreen() {
                     value = viewModel.nombre,
                     onValueChange = {
                         viewModel.nombre = it
-                        nombreError = it.length > 50
                         nombreObligatorioError = it.trim().isEmpty()
+                        nombreError = !nombreObligatorioError && it.length > 50
                     },
                     label = { Text("Nombre")},
                     isError = nombreError || nombreObligatorioError,
@@ -118,9 +125,7 @@ fun CrearAlbumScreen() {
                             )
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-
+                    modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
@@ -134,8 +139,30 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.cover,
-                    onValueChange = { viewModel.cover = it },
+                    onValueChange = {
+                        viewModel.cover = it
+                        URLObligatoriaError = it.trim().isEmpty()
+                        URLError = !URLObligatoriaError && it.length > 500
+                    },
                     label = { Text("URL de la portada") },
+                    isError = URLObligatoriaError || URLError ,
+                    supportingText = {
+                        if (URLObligatoriaError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (URLError) {
+                            Text(
+                                text = "La URL supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
@@ -166,8 +193,30 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it },
+                    onValueChange = {
+                        viewModel.descripcion = it
+                        descripcionObligatoriaError = it.trim().isEmpty()
+                        descripcionError = !descripcionObligatoriaError && it.length > 150
+                    },
                     label = { Text("Descripción") },
+                    isError = descripcionObligatoriaError || descripcionError,
+                    supportingText = {
+                        if (descripcionObligatoriaError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (descripcionError) {
+                            Text(
+                                text = "La descripción supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
