@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
+import com.example.vinyls.ui.crearpremio.CrearPremioScreen // IMPORTANTE: agregar este import
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("home") {
                             HomeAppScreen()
+                        }
+                        // NUEVO: agregamos la ruta crearPremio para navegar directo
+                        composable("crearPremio") {
+                            CrearPremioScreen()
                         }
                     }
                 }

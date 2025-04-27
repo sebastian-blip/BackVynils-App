@@ -73,8 +73,12 @@ fun CrearPremioScreen() {
 
                 OutlinedTextField(
                     value = viewModel.nombre,
-                    onValueChange = { viewModel.nombre = it },
+                    onValueChange = {
+                        viewModel.nombre = it
+                        viewModel.nombreError = false
+                    },
                     label = { Text("Nombre") },
+                    isError = viewModel.nombreError,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -84,11 +88,22 @@ fun CrearPremioScreen() {
                         cursorColor = Color.Black
                     )
                 )
+                if (viewModel.nombreError) {
+                    Text(
+                        text = "El nombre es obligatorio",
+                        color = Color.Red,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                }
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it },
+                    onValueChange = {
+                        viewModel.descripcion = it
+                        viewModel.descripcionError = false
+                    },// NUEVO
                     label = { Text("Descripción") },
+                    isError = viewModel.descripcionError,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -98,11 +113,22 @@ fun CrearPremioScreen() {
                         cursorColor = Color.Black
                     )
                 )
+                if (viewModel.descripcionError) {
+                    Text(
+                        text = "La descripción es obligatoria",
+                        color = Color.Red,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                }
 
                 OutlinedTextField(
                     value = viewModel.organizacion,
-                    onValueChange = { viewModel.organizacion = it },
+                    onValueChange = {
+                        viewModel.organizacion = it
+                        viewModel.organizacionError = false
+                    },// NUEVO
                     label = { Text("Organización") },
+                    isError = viewModel.organizacionError,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
@@ -112,23 +138,41 @@ fun CrearPremioScreen() {
                         cursorColor = Color.Black
                     )
                 )
+                if (viewModel.organizacionError) {
+                    Text(
+                        text = "La organización es obligatoria",
+                        color = Color.Red,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
                     onClick = {
-                        viewModel.crearPremio(
-                            onSuccess = {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("🎉 Premio creado exitosamente")
+                        // NUEVO: Validaciones antes de crear
+                        viewModel.nombreError = viewModel.nombre.isBlank()
+                        viewModel.descripcionError = viewModel.descripcion.isBlank()
+                        viewModel.organizacionError = viewModel.organizacion.isBlank()
+
+                        if (!viewModel.nombreError && !viewModel.descripcionError && !viewModel.organizacionError) {
+                            viewModel.crearPremio(
+                                onSuccess = {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar("🎉 Premio creado exitosamente")
+                                    }
+                                },
+                                onError = {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar("❌ Error: ${it.message}")
+                                    }
                                 }
-                            },
-                            onError = {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("❌ Error: ${it.message}")
-                                }
+                            )
+                        } else {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("❗ Por favor, completa todos los campos.")
                             }
-                        )
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
                     modifier = Modifier.fillMaxWidth()

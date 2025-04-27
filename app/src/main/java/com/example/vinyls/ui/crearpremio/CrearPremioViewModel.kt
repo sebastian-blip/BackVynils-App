@@ -15,11 +15,19 @@ class CrearPremioViewModel(application: Application) : AndroidViewModel(applicat
     var descripcion by mutableStateOf("")
     var organizacion by mutableStateOf("")
 
+    var nombreError by mutableStateOf(false)
+    var descripcionError by mutableStateOf(false)
+    var organizacionError by mutableStateOf(false)
+
     fun crearPremio(
         onSuccess: () -> Unit = {},
         onError: (Exception) -> Unit = {}
     ) {
-        if (nombre.isBlank() || descripcion.isBlank() || organizacion.isBlank()) {
+        nombreError = nombre.isBlank()
+        descripcionError = descripcion.isBlank()
+        organizacionError = organizacion.isBlank()
+
+        if (nombreError || descripcionError || organizacionError) {
             onError(Exception("Todos los campos son obligatorios"))
             return
         }
