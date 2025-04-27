@@ -10,7 +10,7 @@ import org.json.JSONObject
 class NetworkServiceAdapter private constructor(context: Context) {
 
     companion object {
-        const val BASE_URL = "http://0.0.0.0:3000"
+        const val BASE_URL = "https://backvynils-q6yc.onrender.com/"
         private var instance: NetworkServiceAdapter? = null
 
         fun getInstance(context: Context): NetworkServiceAdapter =
