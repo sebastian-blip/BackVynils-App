@@ -48,7 +48,7 @@ fun HomeAppScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(3.dp))
             AlbumCarousel(navController)
             Spacer(modifier = Modifier.height(3.dp))
-            AwardsCarousel()
+            AwardsCarousel(navController)
         }
     }
 }
@@ -130,8 +130,13 @@ fun AlbumCarousel(navController: NavController){
 
 @Composable
 
-fun AwardsCarousel(){
-    SectionTitle(title = "Premios")
+fun AwardsCarousel(navController: NavController){
+    SectionTitle(
+        title = "Premios",
+        onAddClick = {
+            navController.navigate("crear_premios")
+        }
+    )
     Spacer(modifier = Modifier.height(6.dp))
     AwardsList()
 }

@@ -18,9 +18,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinyls.R
 import kotlinx.coroutines.launch
+import androidx.navigation.NavController
+
 
 @Composable
-fun CrearPremioScreen() {
+fun CrearPremioScreen (navController: NavController) {
     val context = LocalContext.current
     val viewModel: CrearPremioViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application)
