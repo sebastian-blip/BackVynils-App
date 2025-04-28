@@ -124,7 +124,7 @@ fun AlbumCarousel(navController: NavController){
         onAddClick = {
             navController.navigate("crear_album")
         },
-        description = "addAwardButton"
+        description = "addAlbumButton"
     )
     Spacer(modifier = Modifier.height(6.dp))
     AlbumList()
