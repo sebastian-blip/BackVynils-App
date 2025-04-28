@@ -31,15 +31,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import coil.compose.AsyncImage
 import androidx.compose.ui.draw.clip
-
+import androidx.compose.ui.text.font.FontStyle
+import androidx.navigation.NavController
 
 
 @Composable
-fun CrearAlbumScreen() {
+fun CrearAlbumScreen(navController: NavController) {
     var expanded by remember { mutableStateOf(false) }
     val opcionesRecordLabel = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
     var expandedGen by remember { mutableStateOf(false) }
     val opcionesGen = listOf("Classical", "Salsa", "Rock", "Folk")
+    var nombreError by remember { mutableStateOf(false) }
+    var nombreObligatorioError by remember { mutableStateOf(false) }
+    var descripcionError by remember { mutableStateOf(false) }
+    var descripcionObligatoriaError by remember { mutableStateOf(false) }
+    var URLObligatoriaError by remember { mutableStateOf(false) }
+    var URLError by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val viewModel: CrearAlbumViewModel = viewModel(
@@ -90,8 +97,30 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.nombre,
-                    onValueChange = { viewModel.nombre = it },
+                    onValueChange = {
+                        viewModel.nombre = it
+                        nombreObligatorioError = it.trim().isEmpty()
+                        nombreError = !nombreObligatorioError && it.length > 50
+                    },
                     label = { Text("Nombre")},
+                    isError = nombreError || nombreObligatorioError,
+                    supportingText = {
+                        if (nombreObligatorioError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (nombreError) {
+                                Text(
+                                text = "El nombre supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
@@ -106,8 +135,30 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.cover,
-                    onValueChange = { viewModel.cover = it },
+                    onValueChange = {
+                        viewModel.cover = it
+                        URLObligatoriaError = it.trim().isEmpty()
+                        URLError = !URLObligatoriaError && it.length > 500
+                    },
                     label = { Text("URL de la portada") },
+                    isError = URLObligatoriaError || URLError ,
+                    supportingText = {
+                        if (URLObligatoriaError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (URLError) {
+                            Text(
+                                text = "La URL supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
@@ -138,8 +189,30 @@ fun CrearAlbumScreen() {
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it },
+                    onValueChange = {
+                        viewModel.descripcion = it
+                        descripcionObligatoriaError = it.trim().isEmpty()
+                        descripcionError = !descripcionObligatoriaError && it.length > 150
+                    },
                     label = { Text("Descripción") },
+                    isError = descripcionObligatoriaError || descripcionError,
+                    supportingText = {
+                        if (descripcionObligatoriaError) {
+                            Text(
+                                text = "Campo obligatorio",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else if (descripcionError) {
+                            Text(
+                                text = "La descripción supera la longitud permitida",
+                                color = Color(0xFFFF8C69),
+                                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,
