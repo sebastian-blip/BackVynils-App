@@ -47,7 +47,7 @@ app/src/main/java/network/NetworkServiceAdapter.kt
 Actualmente, la app utiliza la siguiente URL para conectarse:
 
 ```
-https://backvynils-q6yc.onrender.com/
+http://10.0.2.2:3000/
 ```
 
 
