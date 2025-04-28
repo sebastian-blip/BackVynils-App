@@ -17,6 +17,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -110,7 +111,7 @@ fun SearchBar(){
 @Composable
 
 fun ArtistCarousel(){
-    SectionTitle(title = "Artistas")
+    SectionTitle(title = "Artistas", description = "addArtisButton")
     Spacer(modifier = Modifier.height(6.dp))
     ArtistList()
 }
@@ -122,7 +123,8 @@ fun AlbumCarousel(navController: NavController){
         title = "Albumes",
         onAddClick = {
             navController.navigate("crear_album")
-        }
+        },
+        description = "addAwardButton"
     )
     Spacer(modifier = Modifier.height(6.dp))
     AlbumList()
@@ -135,7 +137,9 @@ fun AwardsCarousel(navController: NavController){
         title = "Premios",
         onAddClick = {
             navController.navigate("crear_premios")
-        }
+        },
+        description = "addPremioButton"
+
     )
     Spacer(modifier = Modifier.height(6.dp))
     AwardsList()
@@ -145,13 +149,15 @@ fun AwardsCarousel(navController: NavController){
 fun SectionTitle(
     title: String,
     showAddIcon: Boolean = true,
-    onAddClick: (() -> Unit)? = null
+    onAddClick: (() -> Unit)? = null,
+    description: String
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
+
     ) {
         Text(
             text = title,
@@ -164,7 +170,7 @@ fun SectionTitle(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar",
+                    contentDescription = description,
                     tint = Color.Red,
                     modifier = Modifier.size(32.dp)
                 )

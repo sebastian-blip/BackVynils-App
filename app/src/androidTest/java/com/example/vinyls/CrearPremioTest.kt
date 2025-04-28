@@ -16,6 +16,18 @@ class CrearPremioScreenTest {
 
     @Test
     fun testCrearPremioCamposYBoton() {
+        composeTestRule.onNodeWithText("Continue").performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule.onAllNodesWithText("Premios").fetchSemanticsNodes().isNotEmpty()
+        }
+
+
+        composeTestRule.onNodeWithContentDescription("addPremioButton").performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 10_000) {
+            composeTestRule.onAllNodesWithText("Crear Premios").fetchSemanticsNodes().isNotEmpty()
+        }
+
         composeTestRule.onNodeWithText("Nombre").performTextInput("Latin Grammy Awards")
         composeTestRule.onNodeWithText("Descripción").performTextInput("Premios otorgados por la Academia Latina de la Grabación para reconocer la excelencia en la música latina.")
         composeTestRule.onNodeWithText("Organización").performTextInput("Latin Recording Academy")
