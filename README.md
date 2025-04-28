@@ -84,3 +84,28 @@ Si deseas apuntar a otro backend, simplemente modifica la constante correspondie
 - **Volley** para conexión a APIs
 - **MVVM** como patrón de arquitectura
 - **Android SDK**
+
+
+
+# 📄 Cómo correr los tests en Vinyls App
+
+## ⚙️ Requisitos
+- Un emulador Android configurado o un dispositivo físico.
+- Gradle configurado correctamente (`./gradlew` debe funcionar sin errores).
+
+## ▶️ Cómo correr los tests
+
+### 1. Desde Android Studio
+
+- Abre el proyecto en Android Studio.
+- Navega a la carpeta:  
+  `app/src/androidTest/java/com/example/vinyls`
+- Abre el archivo de tests, por ejemplo:  
+  `CrearPremioScreenTest.kt`
+- Haz clic derecho sobre el archivo o sobre el nombre del test (`@Test`) que quieras correr.
+- Selecciona **Run 'NombreDelTest'** o **Run 'CrearPremioScreenTest'**.
+- También puedes correr **todos los tests** haciendo clic derecho sobre la carpeta `androidTest` y eligiendo **Run 'All Test'**.
+
+
+
+
