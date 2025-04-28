@@ -92,7 +92,6 @@ Si deseas apuntar a otro backend, simplemente modifica la constante correspondie
 ## ⚙️ Requisitos
 - Un emulador Android configurado o un dispositivo físico.
 - Gradle configurado correctamente (`./gradlew` debe funcionar sin errores).
-- Tener configurado `JAVA_HOME` apuntando a tu instalación de Java.
 
 ## ▶️ Cómo correr los tests
 
