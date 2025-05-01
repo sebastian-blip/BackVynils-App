@@ -1,8 +1,6 @@
 package com.example.vinyls.ui.crearalbum
 
 import android.app.Application
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -123,13 +121,15 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.Black,
                         cursorColor = Color.White,
                         focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.Gray
+                        unfocusedBorderColor = Color.Gray,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
                 )
 
@@ -161,13 +161,15 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.Black,
                         cursorColor = Color.White,
                         focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.Gray
+                        unfocusedBorderColor = Color.Gray,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
                 )
 
@@ -177,13 +179,15 @@ fun CrearAlbumScreen(navController: NavController) {
                     label = { Text("Fecha de lanzamiento (YYYY-MM-DDTHH:MM:SS-05:00)") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.Black,
                         cursorColor = Color.White,
                         focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.Gray
+                        unfocusedBorderColor = Color.Gray,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
                 )
 
@@ -215,13 +219,15 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.Black,
                         cursorColor = Color.White,
                         focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.Gray
+                        unfocusedBorderColor = Color.Gray,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
                 )
 
@@ -244,13 +250,15 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expandedGen = !expandedGen },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
-                            unfocusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.Black,
                             cursorColor = Color.White,
                             focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.Gray
+                            unfocusedBorderColor = Color.Gray,
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White
                         )
                     )
 
@@ -289,13 +297,15 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
-                            unfocusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.Black,
                             cursorColor = Color.White,
                             focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.Gray
+                            unfocusedBorderColor = Color.Gray,
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White
                         )
                     )
 
