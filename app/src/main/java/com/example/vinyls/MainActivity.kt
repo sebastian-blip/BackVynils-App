@@ -16,6 +16,7 @@ import com.example.vinyls.ui.crearpremio.CrearPremioScreen
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
+import com.example.vinyls.ui.artists.ArtistListScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "login",
+                        startDestination = "artistas",
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable("login") {
@@ -44,6 +45,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("crear_premios") {
                             CrearPremioScreen(navController)
+                        }
+                        composable("artistas") {
+                            ArtistListScreen()
                         }
                     }
                 }
