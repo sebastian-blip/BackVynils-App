@@ -20,6 +20,8 @@ import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import com.example.vinyls.R
 
 @Composable
 fun ListarArtistasScreen(navController: NavController) {
@@ -39,8 +41,31 @@ fun ListarArtistasScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
+            // 🟡 Header arriba
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_vinyls),
+                    contentDescription = "Logo de Vinyls",
+                    modifier = Modifier
+                        .height(60.dp)
+                        .clickable { navController.navigate("home") }
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.menu_icon),
+                    contentDescription = "Menú",
+                    modifier = Modifier.height(40.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             if (viewModel.cargando) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -49,7 +74,9 @@ fun ListarArtistasScreen(navController: NavController) {
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
                     contentPadding = PaddingValues(8.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -64,6 +91,7 @@ fun ListarArtistasScreen(navController: NavController) {
         }
     }
 }
+
 
 @Composable
 fun ArtistaItem(artista: ListarArtistasViewModel.Artista, onClick: () -> Unit) {
