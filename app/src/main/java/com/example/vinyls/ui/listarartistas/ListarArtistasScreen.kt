@@ -42,7 +42,7 @@ fun ListarArtistasScreen(navController: NavController) {
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            // 🟡 Header arriba
+            // Header
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -72,25 +72,58 @@ fun ListarArtistasScreen(navController: NavController) {
                     color = Color.White
                 )
             } else {
+                // Grid de artistas paginados
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
-                        .fillMaxSize()
+                        .weight(1f)
                         .padding(horizontal = 16.dp),
                     contentPadding = PaddingValues(8.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(viewModel.artistas) { artista ->
+                    items(viewModel.artistasPaginados) { artista ->
                         ArtistaItem(artista = artista) {
                             navController.navigate("detalle_artista/${artista.id}")
                         }
+                    }
+                }
+
+                // Paginación
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    IconButton(
+                        onClick = { viewModel.paginaAnterior() },
+                        enabled = viewModel.paginaActual > 1
+                    ) {
+                        Text("◀", color = Color.White)
+                    }
+
+                    for (i in 1..viewModel.totalPaginas) {
+                        TextButton(onClick = { viewModel.irAPagina(i) }) {
+                            Text(
+                                text = i.toString(),
+                                color = if (i == viewModel.paginaActual) Color(0xFFFFC0CB) else Color.White
+                            )
+                        }
+                    }
+
+                    IconButton(
+                        onClick = { viewModel.siguientePagina() },
+                        enabled = viewModel.paginaActual < viewModel.totalPaginas
+                    ) {
+                        Text("▶", color = Color.White)
                     }
                 }
             }
         }
     }
 }
+
 
 
 @Composable

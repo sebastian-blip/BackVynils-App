@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.vinyls.network.NetworkServiceAdapter
 import kotlinx.coroutines.launch
 import org.json.JSONArray
-import org.json.JSONObject
 
 class ListarArtistasViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -16,12 +15,45 @@ class ListarArtistasViewModel(application: Application) : AndroidViewModel(appli
     var artistas by mutableStateOf<List<Artista>>(emptyList())
     var cargando by mutableStateOf(false)
 
+    // 🟣 Lógica de paginación
+    var paginaActual by mutableStateOf(1)
+    private val artistasPorPagina = 6
+
+    val artistasPaginados: List<Artista>
+        get() {
+            val fromIndex = (paginaActual - 1) * artistasPorPagina
+            val toIndex = minOf(fromIndex + artistasPorPagina, artistas.size)
+            return if (fromIndex < toIndex) artistas.subList(fromIndex, toIndex) else emptyList()
+        }
+
+    val totalPaginas: Int
+        get() = (artistas.size + artistasPorPagina - 1) / artistasPorPagina
+
+    fun irAPagina(pagina: Int) {
+        if (pagina in 1..totalPaginas) {
+            paginaActual = pagina
+        }
+    }
+
+    fun siguientePagina() {
+        if (paginaActual < totalPaginas) {
+            paginaActual++
+        }
+    }
+
+    fun paginaAnterior() {
+        if (paginaActual > 1) {
+            paginaActual--
+        }
+    }
+
     fun cargarArtistas() {
         cargando = true
         viewModelScope.launch {
             network.getTodosLosArtistas(
                 onSuccess = { jsonArray ->
                     artistas = jsonArray.toArtistaList()
+                    paginaActual = 1 // reinicia a la página 1
                     cargando = false
                 },
                 onError = {
@@ -53,4 +85,7 @@ class ListarArtistasViewModel(application: Application) : AndroidViewModel(appli
         return list
     }
 }
+
+
+
 
