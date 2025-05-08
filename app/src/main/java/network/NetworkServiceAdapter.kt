@@ -6,6 +6,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
+import com.android.volley.toolbox.JsonArrayRequest
+import org.json.JSONArray
 
 class NetworkServiceAdapter private constructor(context: Context) {
 
@@ -91,9 +93,18 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
-
-
-
+    fun getTodosLosArtistas(
+        onSuccess: (JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}musicians"
+        val request = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response -> onSuccess(response) },
+            { error -> onError(error) }
+        )
+        requestQueue.add(request)
+    }
 
 
     // Ejemplo para otros endpoints:

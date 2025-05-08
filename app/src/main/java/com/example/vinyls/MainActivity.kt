@@ -17,8 +17,7 @@ import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
 import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
-import com.example.vinyls.listarartistas.ListarArtistasScreen
-
+import com.example.vinyls.ui.listarartistas.ListarArtistasScreen
 
 
 class MainActivity : ComponentActivity() {
