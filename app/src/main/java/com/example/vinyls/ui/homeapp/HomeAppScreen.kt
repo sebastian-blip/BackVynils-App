@@ -114,7 +114,7 @@ fun ArtistCarousel(navController: NavController) {
     SectionTitle(
         title = "Artistas",
         onAddClick = {
-            navController.navigate("detalle_artista/100") // ID quemado
+            navController.navigate("listar_artistas")
         },
         description = "addArtisButton"
     )

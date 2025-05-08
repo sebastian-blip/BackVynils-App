@@ -92,6 +92,10 @@ class NetworkServiceAdapter private constructor(context: Context) {
     }
 
 
+
+
+
+
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)
     // fun postCollector(...)
