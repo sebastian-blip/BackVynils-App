@@ -122,7 +122,7 @@ fun AlbumCarousel(navController: NavController){
     SectionTitle(
         title = "Albumes",
         onAddClick = {
-            navController.navigate("crear_album")
+            navController.navigate("listar_albumns")
         },
         description = "addAlbumButton"
     )
