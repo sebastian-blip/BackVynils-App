@@ -2,6 +2,7 @@ package com.example.vinyls.ui.albumlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,7 +66,7 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(albums) { album ->
-                AlbumCard(album)
+                AlbumCard(album, navController)
             }
         }
 
@@ -160,12 +161,15 @@ fun AddAlbumButton(navController: NavController) {
 }
 
 @Composable
-fun AlbumCard(album: Album) {
+fun AlbumCard(album: Album, navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .width(150.dp)
             .padding(8.dp)
+            .clickable {
+                navController.navigate("detalle_album/${album.albumId}")
+            }
     ) {
         Image(
             painter = rememberImagePainter(album.cover),
