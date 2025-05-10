@@ -16,6 +16,7 @@ import com.example.vinyls.ui.crearpremio.CrearPremioScreen
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
+import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +45,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("crear_premios") {
                             CrearPremioScreen(navController)
+                        }
+                        composable("detalle_artista/{id}") { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 100
+                            DetalleArtistaScreen(navController = navController, artistaId = id)
                         }
                     }
                 }

@@ -60,6 +60,37 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
+    fun getMusico(
+        id: Int,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}musicians/$id"
+        val request = JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+            { response -> onSuccess(response) },
+            { error -> onError(error) }
+        )
+
+        requestQueue.add(request)
+    }
+
+    fun getPremioById(
+        premioId: Int,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}prizes/$premioId"
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response -> onSuccess(response) },
+            { error -> onError(error) }
+        )
+        requestQueue.add(request)
+    }
+
 
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)
