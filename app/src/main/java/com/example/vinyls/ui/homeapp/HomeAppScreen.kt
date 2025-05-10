@@ -45,7 +45,7 @@ fun HomeAppScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            ArtistCarousel()
+            ArtistCarousel(navController)
             Spacer(modifier = Modifier.height(3.dp))
             AlbumCarousel(navController)
             Spacer(modifier = Modifier.height(3.dp))
@@ -110,8 +110,14 @@ fun SearchBar(){
 
 @Composable
 
-fun ArtistCarousel(){
-    SectionTitle(title = "Artistas", description = "addArtisButton")
+fun ArtistCarousel(navController: NavController) {
+    SectionTitle(
+        title = "Artistas",
+        onAddClick = {
+            navController.navigate("detalle_artista/100") // ID quemado
+        },
+        description = "addArtisButton"
+    )
     Spacer(modifier = Modifier.height(6.dp))
     ArtistList()
 }
@@ -122,7 +128,7 @@ fun AlbumCarousel(navController: NavController){
     SectionTitle(
         title = "Albumes",
         onAddClick = {
-            navController.navigate("crear_album")
+            navController.navigate("listar_albumns")
         },
         description = "addAlbumButton"
     )

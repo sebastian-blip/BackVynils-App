@@ -18,6 +18,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinyls.R
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.navigation.NavController
 
 
@@ -34,6 +36,7 @@ fun CrearPremioScreen (navController: NavController) {
     var nombreError by remember { mutableStateOf(false) }
     var descripcionError by remember { mutableStateOf(false) }
     var organizacionError by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
 
 
     Scaffold(
@@ -50,7 +53,9 @@ fun CrearPremioScreen (navController: NavController) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState)
             ) {
 
                 Text(
@@ -71,7 +76,7 @@ fun CrearPremioScreen (navController: NavController) {
                         Image(
                             painter = painterResource(id = R.drawable.trophy_icon),
                             contentDescription = "Trofeo",
-                            modifier = Modifier.size(300.dp)
+                            modifier = Modifier.size(180.dp)
                         )
                     }
                 }
