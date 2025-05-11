@@ -31,6 +31,8 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
 import androidx.navigation.NavController
+import androidx.compose.ui.platform.testTag
+
 
 
 @Composable
@@ -121,6 +123,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -161,6 +165,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -176,9 +182,11 @@ fun CrearAlbumScreen(navController: NavController) {
                 OutlinedTextField(
                     value = viewModel.releaseDate,
                     onValueChange = { viewModel.releaseDate = it },
-                    label = { Text("Fecha de lanzamiento (YYYY-MM-DDTHH:MM:SS-05:00)") },
+                    label = { Text("Fecha de lanzamiento (YYYY-MM-DD)") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -219,6 +227,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -239,7 +249,9 @@ fun CrearAlbumScreen(navController: NavController) {
                         readOnly = true,
                         label = { Text("Genero") },
                         trailingIcon = {
-                            IconButton(onClick = { expandedGen = !expandedGen }) {
+                            IconButton(
+                                onClick = { expandedGen = !expandedGen },
+                                modifier = Modifier.testTag("openDropdowGen")) {
                                 Icon(
                                     imageVector = if (expandedGen) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                                     contentDescription = "Abrir menú"
@@ -250,6 +262,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expandedGen = !expandedGen },
                         colors = OutlinedTextFieldDefaults.colors(
+                            errorTextColor = Color.Black,
+                            errorContainerColor = Color.White,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
@@ -273,7 +287,9 @@ fun CrearAlbumScreen(navController: NavController) {
                                 onClick = {
                                     viewModel.genre = opcion
                                     expandedGen = false
-                                }
+
+                                },
+                                modifier = Modifier.testTag("menuItem_$opcion")
                             )
                         }
                     }
@@ -286,7 +302,9 @@ fun CrearAlbumScreen(navController: NavController) {
                         readOnly = true,
                         label = { Text("Sello discográfico") },
                         trailingIcon = {
-                            IconButton(onClick = { expanded = !expanded }) {
+                            IconButton(
+                                onClick = { expanded = !expanded },
+                                modifier = Modifier.testTag("openDropdowRecor")) {
                                 Icon(
                                     imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                                     contentDescription = "Abrir menú"
@@ -297,6 +315,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
                         colors = OutlinedTextFieldDefaults.colors(
+                            errorTextColor = Color.Black,
+                            errorContainerColor = Color.White,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
@@ -320,7 +340,8 @@ fun CrearAlbumScreen(navController: NavController) {
                                 onClick = {
                                     viewModel.recordLabel = opcion
                                     expanded = false
-                                }
+                                },
+                                modifier = Modifier.testTag("menuItem_$opcion")
                             )
                         }
                     }
@@ -334,6 +355,7 @@ fun CrearAlbumScreen(navController: NavController) {
                             onSuccess = {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("✅ Álbum creado exitosamente")
+                                    navController.navigate("listar_albumns")
                                 }
                             },
                             onError = {
@@ -344,7 +366,9 @@ fun CrearAlbumScreen(navController: NavController) {
                         )
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B6B)),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("botonCrearAlbum")
                 ) {
                     Text("Crear Álbum", color = Color.White)
                 }
@@ -357,7 +381,7 @@ fun CrearAlbumScreen(navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .clickable {
-                            // aqui navController.navigate("nombrepantallaalbumnes")
+                            navController.navigate("listar_albumns")
                         }
                 )
             }

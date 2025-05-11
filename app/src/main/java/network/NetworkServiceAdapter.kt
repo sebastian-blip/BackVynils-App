@@ -6,8 +6,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
-import com.android.volley.toolbox.JsonArrayRequest
 import org.json.JSONArray
+import com.android.volley.toolbox.JsonArrayRequest
+import android.util.Log
 
 class NetworkServiceAdapter private constructor(context: Context) {
 
@@ -102,6 +103,57 @@ class NetworkServiceAdapter private constructor(context: Context) {
             Request.Method.GET, url, null,
             { response -> onSuccess(response) },
             { error -> onError(error) }
+        )
+        requestQueue.add(request)
+    }
+
+    fun getAlbums(
+        onSuccess: (JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = BASE_URL + "albums"
+        val request = JsonArrayRequest(
+            Request.Method.GET,
+            url,
+            null,
+            { response ->
+                try {
+                    Log.d("GetAlbums", "Albums retrieved: $response")
+                    onSuccess(response)
+                } catch (e: Exception) {
+                    Log.e("GetAlbums", "Error processing the response: ${e.message}")
+                    onError(e)
+                }
+            },
+            { error ->
+                Log.e("GetAlbums", "Error fetching albums: ${error.message}")
+                onError(Exception("Error fetching albums"))
+            }
+        )
+
+        requestQueue.add(request)
+    }
+
+    fun getAlbumById(
+        albumId: Int,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = BASE_URL + "albums/$albumId"
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    Log.d("getAlbumById", "Albums retrieved: $response")
+                    onSuccess(response)
+                } catch (e: Exception) {
+                    Log.e("getAlbumById", "Error processing the response: ${e.message}")
+                    onError(e)
+                }
+            },
+            { error ->
+                onError(Exception("Error fetching album by ID"))
+            }
         )
         requestQueue.add(request)
     }
