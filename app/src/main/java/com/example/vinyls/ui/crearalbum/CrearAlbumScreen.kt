@@ -121,6 +121,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -161,6 +163,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -179,6 +183,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     label = { Text("Fecha de lanzamiento (YYYY-MM-DDTHH:MM:SS-05:00)") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -219,6 +225,8 @@ fun CrearAlbumScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
+                        errorTextColor = Color.Black,
+                        errorContainerColor = Color.White,
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         focusedLabelColor = Color.White,
@@ -250,6 +258,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expandedGen = !expandedGen },
                         colors = OutlinedTextFieldDefaults.colors(
+                            errorTextColor = Color.Black,
+                            errorContainerColor = Color.White,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
@@ -297,6 +307,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
                         colors = OutlinedTextFieldDefaults.colors(
+                            errorTextColor = Color.Black,
+                            errorContainerColor = Color.White,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                             focusedLabelColor = Color.White,
@@ -334,6 +346,7 @@ fun CrearAlbumScreen(navController: NavController) {
                             onSuccess = {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("✅ Álbum creado exitosamente")
+                                    navController.navigate("listar_albumns")
                                 }
                             },
                             onError = {
@@ -357,7 +370,7 @@ fun CrearAlbumScreen(navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .clickable {
-                            // aqui navController.navigate("nombrepantallaalbumnes")
+                            navController.navigate("listar_albumns")
                         }
                 )
             }
