@@ -106,7 +106,6 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
-
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)
     // fun postCollector(...)
