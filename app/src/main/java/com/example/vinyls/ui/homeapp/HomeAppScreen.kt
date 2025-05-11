@@ -7,7 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.layout.ContentScale
@@ -162,24 +164,45 @@ fun SectionTitle(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-
-    ) {
+            .padding(vertical = 8.dp),
+     ) {
         Text(
             text = title,
             color = Color.White,
             style = MaterialTheme.typography.titleLarge
         )
-        if (showAddIcon) {
-            IconButton(
-                onClick = { onAddClick?.invoke() }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = description,
-                    tint = Color.Red,
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        if (showAddIcon && onAddClick != null) {
+            if (title.lowercase() == "premios") {
+                IconButton(
+                    onClick = onAddClick,
                     modifier = Modifier.size(32.dp)
-                )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = description,
+                        tint = Color.Red,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }  else {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                        .clickable { onAddClick() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = description,
+                        tint = Color.Black,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }
