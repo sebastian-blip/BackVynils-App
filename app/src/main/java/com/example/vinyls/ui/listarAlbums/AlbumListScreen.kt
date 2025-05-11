@@ -26,6 +26,7 @@ import coil.compose.rememberImagePainter
 import com.example.vinyls.R
 import com.example.vinyls.repositories.Album
 import com.example.vinyls.viewmodels.AlbumListViewModel
+import androidx.compose.ui.platform.testTag
 
 @Composable
 fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel = viewModel()) {
@@ -88,7 +89,9 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
 
             Text(text = "$currentPage", color = Color.White)
 
-            IconButton(onClick = { viewModel.nextPage() }, enabled = isNextEnabled) {
+            IconButton(onClick = {
+                viewModel.nextPage() }, enabled = isNextEnabled,
+                modifier = Modifier.testTag("boton_siguiente")) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "Siguiente", tint = Color.White)
             }
         }
