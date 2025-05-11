@@ -18,6 +18,9 @@ import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
 import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
 import com.example.vinyls.ui.listarartistas.ListarArtistasScreen
+import com.example.vinyls.ui.albumlist.AlbumListScreen
+import com.example.vinyls.ui.detallealbum.DetalleAlbumScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +56,13 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("listar_artistas") {
                             ListarArtistasScreen(navController)
+                        }
+                        composable("listar_albumns") {
+                            AlbumListScreen(navController = navController)
+                        }
+                        composable("detalle_album/{albumId}") { backStackEntry ->
+                            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
+                            DetalleAlbumScreen(navController, albumId)
                         }
                     }
                 }
