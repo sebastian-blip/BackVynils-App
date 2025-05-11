@@ -23,25 +23,50 @@ class CrearAlbumScreenTest {
 
         composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
 
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule
+                .onAllNodesWithContentDescription("Agregar álbum")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+
+        composeTestRule.onNodeWithContentDescription("Agregar álbum").performClick()
+
+
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodesWithText("Crear Álbum").fetchSemanticsNodes().isNotEmpty()
         }
 
         composeTestRule.onNodeWithText("Nombre").performTextInput("Volumen 2.0")
         composeTestRule.onNodeWithText("URL de la portada").performTextInput("https://comodibujar.club/wp-content/uploads/2019/04/oso-panda-kawaii-1.jpg")
-        composeTestRule.onNodeWithText("Fecha de lanzamiento (YYYY-MM-DDTHH:MM:SS-05:00)").performTextInput("Fecha de lanzamiento (2025-02-'02':30:15-05:00)")
+        composeTestRule.onNodeWithText("Fecha de lanzamiento (YYYY-MM-DD)").performTextInput("2025-02-02")
         composeTestRule.onNodeWithText("Descripción").performTextInput("Álbum 1")
-        composeTestRule.onNodeWithText("Genero").performClick()
-        composeTestRule.waitUntil(timeoutMillis = 5_000) {
-            composeTestRule.onAllNodesWithText("Rock").fetchSemanticsNodes().isNotEmpty()
+        composeTestRule
+            .onNode(hasScrollAction())
+            .performTouchInput {
+                swipeUp()
+            }
+
+
+        composeTestRule.onNodeWithTag("openDropdowGen").performClick()
+        composeTestRule.waitUntil(5000) {
+            composeTestRule.onAllNodesWithTag("menuItem_Rock").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithText("Rock").performClick()
-        composeTestRule.onNodeWithText("Sello discográfico").performClick()
-        composeTestRule.waitUntil(timeoutMillis = 5_000) {
-            composeTestRule.onAllNodesWithText("Sony Music").fetchSemanticsNodes().isNotEmpty()
+
+        composeTestRule.onNodeWithTag("menuItem_Rock").performClick()
+        composeTestRule.onNodeWithText("Rock").assertExists()
+
+
+        composeTestRule.onNodeWithTag("openDropdowRecor").performClick()
+        composeTestRule.waitUntil(5000) {
+            composeTestRule.onAllNodesWithTag("menuItem_Sony Music").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithText("Sony Music").performClick()
-        composeTestRule.onNodeWithText("Crear Álbum").performClick()
+
+        composeTestRule.onNodeWithTag("menuItem_Sony Music").performClick()
+        composeTestRule.onNodeWithText("Sony Music").assertExists()
+
+
+        composeTestRule.onNodeWithTag("botonCrearAlbum").performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule.onAllNodesWithText("✅ Álbum creado exitosamente").fetchSemanticsNodes().isNotEmpty()
