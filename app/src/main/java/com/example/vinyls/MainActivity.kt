@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.vinyls.ui.crearalbum.CrearAlbumScreen
 import com.example.vinyls.ui.crearpremio.CrearPremioScreen
+import com.example.vinyls.ui.detallealbum.DetalleAlbumScreen
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
@@ -40,6 +41,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("home") {
                             HomeAppScreen(navController)
+                        }
+                        composable("detalle_album/{albumId}") { backStackEntry ->
+                            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
+                            DetalleAlbumScreen(navController, albumId)
                         }
                         composable("crear_album") {
                             CrearAlbumScreen(navController)
