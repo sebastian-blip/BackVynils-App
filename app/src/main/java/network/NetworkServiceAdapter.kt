@@ -122,7 +122,29 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
-
+    fun getAlbumById(
+        albumId: Int,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = BASE_URL + "albums/$albumId"
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    Log.d("getAlbumById", "Albums retrieved: $response")
+                    onSuccess(response)
+                } catch (e: Exception) {
+                    Log.e("getAlbumById", "Error processing the response: ${e.message}")
+                    onError(e)
+                }
+            },
+            { error ->
+                onError(Exception("Error fetching album by ID"))
+            }
+        )
+        requestQueue.add(request)
+    }
 
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)
