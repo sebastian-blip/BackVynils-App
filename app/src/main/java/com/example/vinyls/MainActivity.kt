@@ -40,7 +40,11 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("home") {
-                            DetalleAlbumScreen(navController)
+                            HomeAppScreen(navController)
+                        }
+                        composable("detalle_album/{albumId}") { backStackEntry ->
+                            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
+                            DetalleAlbumScreen(navController, albumId)
                         }
                         composable("crear_album") {
                             CrearAlbumScreen(navController)
