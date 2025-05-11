@@ -19,7 +19,6 @@ import com.example.vinyls.ui.theme.VinylsTheme
 import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
 import com.example.vinyls.ui.listarartistas.ListarArtistasScreen
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
