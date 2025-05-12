@@ -4,27 +4,27 @@ import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.vinyls.R
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.navigation.NavController
+import androidx.compose.foundation.clickable
 
 
 @Composable
-fun CrearPremioScreen (navController: NavController) {
+fun CrearPremioScreen(navController: NavController) {
     val context = LocalContext.current
     val viewModel: CrearPremioViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application)
@@ -32,39 +32,37 @@ fun CrearPremioScreen (navController: NavController) {
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     var nombreError by remember { mutableStateOf(false) }
     var descripcionError by remember { mutableStateOf(false) }
     var organizacionError by remember { mutableStateOf(false) }
-    val scrollState = rememberScrollState()
-
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         containerColor = Color.Black,
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-
-        Box(
+        Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(24.dp)
+                .verticalScroll(scrollState)
         ) {
+            // 🟣 Navbar
+            HeaderVinyls(navController)
+
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .verticalScroll(scrollState)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 Text(
                     text = "Crear Premios",
                     color = Color(0xFFE57373),
                     style = MaterialTheme.typography.headlineMedium
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
 
                 Surface(
                     modifier = Modifier.size(220.dp),
@@ -81,12 +79,11 @@ fun CrearPremioScreen (navController: NavController) {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
-
                 OutlinedTextField(
                     value = viewModel.nombre,
-                    onValueChange = { viewModel.nombre = it
-                                      nombreError = false
+                    onValueChange = {
+                        viewModel.nombre = it
+                        nombreError = false
                     },
                     label = { Text("Nombre") },
                     isError = nombreError,
@@ -105,8 +102,10 @@ fun CrearPremioScreen (navController: NavController) {
 
                 OutlinedTextField(
                     value = viewModel.descripcion,
-                    onValueChange = { viewModel.descripcion = it
-                                      descripcionError = false},
+                    onValueChange = {
+                        viewModel.descripcion = it
+                        descripcionError = false
+                    },
                     label = { Text("Descripción") },
                     isError = descripcionError,
                     supportingText = {
@@ -124,8 +123,9 @@ fun CrearPremioScreen (navController: NavController) {
 
                 OutlinedTextField(
                     value = viewModel.organizacion,
-                    onValueChange = { viewModel.organizacion = it
-                                      organizacionError = false
+                    onValueChange = {
+                        viewModel.organizacion = it
+                        organizacionError = false
                     },
                     label = { Text("Organización") },
                     isError = organizacionError,
@@ -141,8 +141,6 @@ fun CrearPremioScreen (navController: NavController) {
                         cursorColor = Color.Black
                     )
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
                     onClick = {
@@ -168,7 +166,7 @@ fun CrearPremioScreen (navController: NavController) {
                                 }
                             )
                         }
-                              },
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -176,5 +174,29 @@ fun CrearPremioScreen (navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun HeaderVinyls(navController: NavController) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 10.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_vinyls),
+            contentDescription = "Logo de Vinyls",
+            modifier = Modifier
+                .height(60.dp)
+                .clickable { navController.navigate("home") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.menu_icon),
+            contentDescription = "Menú",
+            modifier = Modifier.height(40.dp)
+        )
     }
 }

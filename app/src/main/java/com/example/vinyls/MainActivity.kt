@@ -13,12 +13,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.vinyls.ui.crearalbum.CrearAlbumScreen
 import com.example.vinyls.ui.crearpremio.CrearPremioScreen
-import com.example.vinyls.ui.detallealbum.DetalleAlbumScreen
 import com.example.vinyls.ui.homeapp.HomeAppScreen
 import com.example.vinyls.ui.login.LoginScreen
 import com.example.vinyls.ui.theme.VinylsTheme
 import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
+import com.example.vinyls.ui.listarartistas.ListarArtistasScreen
 import com.example.vinyls.ui.albumlist.AlbumListScreen
+import com.example.vinyls.ui.detallealbum.DetalleAlbumScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +44,6 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeAppScreen(navController)
                         }
-                        composable("detalle_album/{albumId}") { backStackEntry ->
-                            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
-                            DetalleAlbumScreen(navController, albumId)
-                        }
                         composable("crear_album") {
                             CrearAlbumScreen(navController)
                         }
@@ -56,8 +54,15 @@ class MainActivity : ComponentActivity() {
                             val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 100
                             DetalleArtistaScreen(navController = navController, artistaId = id)
                         }
+                        composable("listar_artistas") {
+                            ListarArtistasScreen(navController)
+                        }
                         composable("listar_albumns") {
                             AlbumListScreen(navController = navController)
+                        }
+                        composable("detalle_album/{albumId}") { backStackEntry ->
+                            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
+                            DetalleAlbumScreen(navController, albumId)
                         }
                     }
                 }
@@ -65,3 +70,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+
+
+
+
