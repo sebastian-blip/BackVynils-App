@@ -2,6 +2,7 @@ package com.example.vinyls.ui.detalleartista
 
 import android.app.Application
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,12 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.vinyls.R
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Album
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Premio
 
@@ -46,10 +49,15 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                 .verticalScroll(scroll)
                 .fillMaxSize()
         ) {
+            // 👇 Header agregado
+            DetalleHeader(navController)
+
             if (viewModel.cargando) {
-                CircularProgressIndicator(color = Color.White, modifier = Modifier.align(Alignment.CenterHorizontally))
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             } else {
-                // Imagen
                 Image(
                     painter = rememberAsyncImagePainter(viewModel.imagenUrl),
                     contentDescription = "Foto del artista",
@@ -62,20 +70,17 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Nombre
                 Text(
                     viewModel.nombre,
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.White
                 )
 
-                // Fecha de nacimiento como subtítulo
                 val birthDateFormatted = viewModel.birthDate.split("T").firstOrNull() ?: "Fecha desconocida"
                 Text(birthDateFormatted, color = Color.White)
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Biografía
                 Text("Biografía", fontWeight = FontWeight.Bold, color = Color.White)
                 Text(viewModel.descripcion, color = Color.White)
 
@@ -145,4 +150,31 @@ fun PremioItem(premio: Premio) {
         Text(premio.description, color = Color.Gray)
     }
 }
+
+@Composable
+fun DetalleHeader(navController: NavController) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_vinyls),
+            contentDescription = "Logo de Vinyls",
+            modifier = Modifier
+                .height(90.dp)
+                .padding(10.dp)
+                .clickable { navController.navigate("home") }
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.menu_icon),
+            contentDescription = "Menú",
+            modifier = Modifier
+                .height(80.dp)
+                .padding(10.dp)
+        )
+    }
+}
+
 
