@@ -6,8 +6,6 @@ import androidx.compose.runtime.setValue
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.vinyls.repositories.AlbumRepository
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class CrearAlbumViewModel(application: Application) : AndroidViewModel(application) {
