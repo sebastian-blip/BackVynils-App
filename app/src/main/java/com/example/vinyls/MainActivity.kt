@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.navArgument
+import androidx.navigation.NavType
+import android.net.Uri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +23,7 @@ import com.example.vinyls.ui.detalleartista.DetalleArtistaScreen
 import com.example.vinyls.ui.listarartistas.ListarArtistasScreen
 import com.example.vinyls.ui.albumlist.AlbumListScreen
 import com.example.vinyls.ui.detallealbum.DetalleAlbumScreen
+import com.example.vinyls.ui.addAlbumArtista.AddAlbumArtistaScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -63,6 +67,24 @@ class MainActivity : ComponentActivity() {
                         composable("detalle_album/{albumId}") { backStackEntry ->
                             val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: 0
                             DetalleAlbumScreen(navController, albumId)
+                        }
+                        composable(
+                            route = "agregar_album_artista/{artistaId}/{artistaNombre}/{artistaImagenUrl}",
+                            arguments = listOf(
+                                navArgument("artistaId") { type = NavType.IntType },
+                                navArgument("artistaNombre") { type = NavType.StringType },
+                                navArgument("artistaImagenUrl") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val artistaId = backStackEntry.arguments?.getInt("artistaId") ?: 0
+                            val artistaNombre = backStackEntry.arguments?.getString("artistaNombre") ?: ""
+                            val artistaImagenUrl = backStackEntry.arguments?.getString("artistaImagenUrl") ?: ""
+                            AddAlbumArtistaScreen(
+                                navController = navController,
+                                artistaId = artistaId,
+                                artistaNombre = artistaNombre,
+                                artistaImagenUrl = Uri.decode(artistaImagenUrl)
+                            )
                         }
                     }
                 }
