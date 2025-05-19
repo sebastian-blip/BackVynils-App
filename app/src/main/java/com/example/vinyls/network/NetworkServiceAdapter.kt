@@ -1,5 +1,6 @@
 package com.example.vinyls.network
 
+import android.content.ClipDescription
 import android.content.Context
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -9,6 +10,40 @@ import org.json.JSONObject
 import org.json.JSONArray
 import com.android.volley.toolbox.JsonArrayRequest
 import android.util.Log
+import com.example.vinyls.repositories.Track
+import com.android.volley.Response
+import com.android.volley.NetworkResponse
+import com.android.volley.ParseError
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonRequest
+
+
+class JsonArrayPutRequest(
+    url: String,
+    private val jsonArrayBody: JSONArray?,
+    listener: Response.Listener<JSONObject>,
+    errorListener: Response.ErrorListener
+) : JsonRequest<JSONObject>(
+    Method.PUT,
+    url,
+    jsonArrayBody?.toString(),  // convertir el JSONArray a string para enviar en body
+    listener,
+    errorListener
+) {
+    override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
+        return try {
+            val jsonString = String(response.data, charset(HttpHeaderParser.parseCharset(response.headers, "utf-8")))
+            Response.success(JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response))
+        } catch (e: Exception) {
+            Response.error(ParseError(e))
+        }
+    }
+
+    override fun getBodyContentType(): String {
+        return "application/json"
+    }
+}
+
 
 class NetworkServiceAdapter private constructor(context: Context) {
 
@@ -157,6 +192,62 @@ class NetworkServiceAdapter private constructor(context: Context) {
         )
         requestQueue.add(request)
     }
+
+
+    fun getAlbumByArtisId(
+        artisId: Int,
+        onSuccess: (JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = BASE_URL + "musicians/$artisId/albums"
+        val request = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    Log.d("getAlbumById", "Albums retrieved: $response")
+                    onSuccess(response)
+                } catch (e: Exception) {
+                    Log.e("getAlbumById", "Error processing the response: ${e.message}")
+                    onError(e)
+                }
+            },
+            { error ->
+                onError(Exception("Error fetching album by ID"))
+            }
+        )
+        requestQueue.add(request)
+    }
+
+
+    fun putAlbumArtist(
+        albums: JSONArray,
+        artistId: Int,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = BASE_URL + "musicians/$artistId/albums"
+        val request = JsonArrayPutRequest(
+            url,
+            albums,
+            { response ->
+                Log.d("putAlbumArtist", "Respuesta: $response")
+                onSuccess(response)
+            },
+            { error ->
+                Log.e("putAlbumArtist", "Error en request: ${error.message}")
+                onError(Exception(error.message ?: "Error desconocido"))
+            }
+        )
+        requestQueue.add(request)
+    }
+
+
+
+
+
+
+
+
 
     // Ejemplo para otros endpoints:
     // fun getAlbums(...)

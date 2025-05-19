@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,6 +25,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.vinyls.R
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Album
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Premio
+import android.net.Uri
+
 
 @Composable
 fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
@@ -113,6 +117,13 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 when (selectedTabIndex) {
                     0 -> {
+                        AddAlbumButton(
+                            navController = navController,
+                            artistaId = artistaId,
+                            artistaNombre = viewModel.nombre,
+                            artistaImagenUrl = viewModel.imagenUrl
+                        )
+
                         viewModel.albums.forEach {
                             AlbumItem(album = it)
                         }
@@ -176,5 +187,26 @@ fun DetalleHeader(navController: NavController) {
         )
     }
 }
+
+@Composable
+fun AddAlbumButton(navController: NavController, artistaId: Int, artistaNombre: String, artistaImagenUrl: String, ) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clickable {
+                navController.navigate("agregar_album_artista/${artistaId}/${artistaNombre}/${Uri.encode(artistaImagenUrl)}")
+            }
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Agregar álbum",
+            tint = Color.Red,
+            modifier = Modifier.size(32.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text("Agregar álbum", color = Color.White)
+    }
+}
+
 
 
