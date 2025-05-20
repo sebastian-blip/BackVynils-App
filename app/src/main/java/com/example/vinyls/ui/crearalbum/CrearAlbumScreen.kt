@@ -32,6 +32,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
 import androidx.navigation.NavController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 
 
@@ -121,7 +123,9 @@ fun CrearAlbumScreen(navController: NavController) {
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = "Campo Nombre del Album" }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -163,7 +167,9 @@ fun CrearAlbumScreen(navController: NavController) {
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = "Campo url de la portada" }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -183,7 +189,9 @@ fun CrearAlbumScreen(navController: NavController) {
                     value = viewModel.releaseDate,
                     onValueChange = { viewModel.releaseDate = it },
                     label = { Text("Fecha de lanzamiento (YYYY-MM-DD)") },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = "Campo Fecha de lanzamiento (YYYY-MM-DD)" }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -225,7 +233,9 @@ fun CrearAlbumScreen(navController: NavController) {
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = "Campo Descripciòn" }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -260,7 +270,14 @@ fun CrearAlbumScreen(navController: NavController) {
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { expandedGen = !expandedGen },
+                            .clickable { expandedGen = !expandedGen }
+                            .semantics {
+                                contentDescription = if (expandedGen) {
+                                    "Género musical, menú desplegable abierto"
+                                } else {
+                                    "Género musical, menú desplegable cerrado"
+                                }
+                            },
                         colors = OutlinedTextFieldDefaults.colors(
                             errorTextColor = Color.Black,
                             errorContainerColor = Color.White,
@@ -274,6 +291,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White
                         )
+
+
                     )
 
                     DropdownMenu(
@@ -312,6 +331,13 @@ fun CrearAlbumScreen(navController: NavController) {
                             }
                         },
                         modifier = Modifier
+                            .semantics {
+                                contentDescription = if (expandedGen) {
+                                    "Sello discográfico, menú desplegable abierto"
+                                } else {
+                                    "Sello discográfico, menú desplegable cerrado"
+                                }
+                            }
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -369,6 +395,7 @@ fun CrearAlbumScreen(navController: NavController) {
                     modifier = Modifier
                     .fillMaxWidth()
                     .testTag("botonCrearAlbum")
+                    .semantics { contentDescription = "Botón para crear álbum" }
                 ) {
                     Text("Crear Álbum", color = Color.White)
                 }
@@ -380,6 +407,7 @@ fun CrearAlbumScreen(navController: NavController) {
                     color = Color(0xFFFF6B6B),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
+                        .semantics { contentDescription = "Botón para volver a lista de álbumes" }
                         .clickable {
                             navController.navigate("listar_albumns")
                         }
@@ -388,3 +416,4 @@ fun CrearAlbumScreen(navController: NavController) {
         }
     }
 }
+

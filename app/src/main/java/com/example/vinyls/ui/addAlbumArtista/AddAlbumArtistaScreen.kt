@@ -31,6 +31,8 @@ import com.example.vinyls.viewmodels.AddAlbumArtistaViewModel
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 
 @Composable
@@ -48,40 +50,62 @@ fun AddAlbumArtistaScreen(
     if (showDialog && selectedAlbum != null) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text("Asociar Álbum", color = Color.White) },
+            title = {
+                Text(
+                    "Asociar Álbum",
+                    color = Color.White,
+                    modifier = Modifier.semantics {
+                        // Describe el título para lectores de pantalla
+                        contentDescription = "Título del diálogo: Asociar Álbum"
+                    }
+                )
+            },
             text = {
                 Text(
                     "¿Quieres asociar el álbum \"${selectedAlbum!!.name}\" al artista?",
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.semantics {
+                        contentDescription = "Mensaje del diálogo: ¿Quieres asociar el álbum ${selectedAlbum!!.name} al artista?"
+                    }
                 )
             },
             confirmButton = {
-                TextButton(onClick = {
-                    viewModel.idArtista = artistaId
-                    viewModel.idAlbum = selectedAlbum!!.albumId
-                    viewModel.nombre = selectedAlbum!!.name
-                    viewModel.cover = selectedAlbum!!.cover
-                    viewModel.releaseDate = selectedAlbum!!.releaseDate
-                    viewModel.descripcion = selectedAlbum!!.description
-                    viewModel.genre = selectedAlbum!!.genre
-                    viewModel.recordLabel = selectedAlbum!!.recordLabel
+                TextButton(
+                    onClick = {
+                        viewModel.idArtista = artistaId
+                        viewModel.idAlbum = selectedAlbum!!.albumId
+                        viewModel.nombre = selectedAlbum!!.name
+                        viewModel.cover = selectedAlbum!!.cover
+                        viewModel.releaseDate = selectedAlbum!!.releaseDate
+                        viewModel.descripcion = selectedAlbum!!.description
+                        viewModel.genre = selectedAlbum!!.genre
+                        viewModel.recordLabel = selectedAlbum!!.recordLabel
 
-                    viewModel.asociarAlbumAArtista(
-                        onSuccess = {
-                            Toast.makeText(context, "Álbum agregado al artista", Toast.LENGTH_SHORT).show()
-                            showDialog = false
-                        },
-                        onError = {
-                            Toast.makeText(context, "Error al agregar el álbum", Toast.LENGTH_SHORT).show()
-                            showDialog = false
-                        }
-                    )
-                }) {
+                        viewModel.asociarAlbumAArtista(
+                            onSuccess = {
+                                Toast.makeText(context, "Álbum agregado al artista", Toast.LENGTH_SHORT).show()
+                                showDialog = false
+                            },
+                            onError = {
+                                Toast.makeText(context, "Error al agregar el álbum", Toast.LENGTH_SHORT).show()
+                                showDialog = false
+                            }
+                        )
+                    },
+                    modifier = Modifier.semantics {
+                        contentDescription = "Botón aceptar para asociar álbum"
+                    }
+                ) {
                     Text("Aceptar", color = Color.Green)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
+                TextButton(
+                    onClick = { showDialog = false },
+                    modifier = Modifier.semantics {
+                        contentDescription = "Botón cancelar para cerrar el diálogo"
+                    }
+                ) {
                     Text("Cancelar", color = Color.Red)
                 }
             },
@@ -153,6 +177,7 @@ fun ArtistHeader(name: String, photoUrl: String) {
             painter = rememberImagePainter(photoUrl),
             contentDescription = "Foto artista",
             modifier = Modifier
+                .semantics { contentDescription = "Foto artista" }
                 .size(60.dp)
                 .clip(MaterialTheme.shapes.small),
             contentScale = ContentScale.Crop
@@ -187,6 +212,7 @@ fun SearchBar(
             unfocusedContainerColor = Color.White
         ),
         modifier = modifier
+            .semantics { contentDescription = "Barra Busqueda Album" }
             .padding(vertical = 8.dp)
             .clip(RoundedCornerShape(12.dp)),
         singleLine = true,
@@ -206,7 +232,9 @@ fun AddAlbumButton(navController: NavController) {
             imageVector = Icons.Default.Add,
             contentDescription = "Agregar álbum",
             tint = Color.Red,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .semantics { contentDescription = "Botòn Ir a Crear Album" }
+                .size(32.dp)
         )
     }
 }
@@ -224,6 +252,7 @@ fun AlbumCard(album: Album, onClick: () -> Unit) {
             painter = rememberImagePainter(album.cover),
             contentDescription = album.name,
             modifier = Modifier
+                .semantics { contentDescription =  album.name }
                 .size(150.dp)
                 .clip(MaterialTheme.shapes.medium),
             contentScale = ContentScale.Crop
