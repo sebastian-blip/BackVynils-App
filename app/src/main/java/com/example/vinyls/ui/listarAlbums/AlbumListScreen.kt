@@ -27,6 +27,8 @@ import com.example.vinyls.R
 import com.example.vinyls.repositories.Album
 import com.example.vinyls.viewmodels.AlbumListViewModel
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 @Composable
 fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel = viewModel()) {
@@ -91,7 +93,9 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
 
             IconButton(onClick = {
                 viewModel.nextPage() }, enabled = isNextEnabled,
-                modifier = Modifier.testTag("boton_siguiente")) {
+                modifier = Modifier
+                    .semantics { contentDescription = "Botòn Siguiente Pàgina" }
+                    .testTag("boton_siguiente")) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "Siguiente", tint = Color.White)
             }
         }
@@ -109,6 +113,7 @@ fun HomeHeader() {
             painter = painterResource(id = R.drawable.logo_vinyls),
             contentDescription = "Logo de Vinyls",
             modifier = Modifier
+                .semantics { contentDescription = "Logo de Vinyls" }
                 .height(90.dp)
                 .padding(10.dp)
         )
@@ -117,6 +122,7 @@ fun HomeHeader() {
             painter = painterResource(id = R.drawable.menu_icon),
             contentDescription = "Imágen menú",
             modifier = Modifier
+                .semantics { contentDescription = "Imàen Menù" }
                 .height(80.dp)
                 .padding(10.dp)
         )
@@ -131,6 +137,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
         placeholder = { Text("Buscar artista", color = Color.Gray) },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color.White) },
         modifier = modifier
+            .semantics { contentDescription = "Barra de Busqueda" }
             .padding(vertical = 8.dp)
             .clip(RoundedCornerShape(12.dp)),
         colors = TextFieldDefaults.colors(
@@ -158,7 +165,8 @@ fun AddAlbumButton(navController: NavController) {
             imageVector = Icons.Default.Add,
             contentDescription = "Agregar álbum",
             tint = Color.Red,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
         )
     }
 }
@@ -178,6 +186,7 @@ fun AlbumCard(album: Album, navController: NavController) {
             painter = rememberImagePainter(album.cover),
             contentDescription = album.name,
             modifier = Modifier
+                .semantics { contentDescription = album.name }
                 .size(150.dp)
                 .clip(MaterialTheme.shapes.medium),
             contentScale = ContentScale.Crop
