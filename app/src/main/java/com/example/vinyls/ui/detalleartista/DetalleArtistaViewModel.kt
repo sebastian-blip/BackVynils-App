@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.vinyls.repositories.ArtistaRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
-import org.json.JSONObject
 
 class DetalleArtistaViewModel(application: Application) : AndroidViewModel(application) {
 
