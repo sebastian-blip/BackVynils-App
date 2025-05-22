@@ -22,8 +22,8 @@
     <string name="menu_cerradp_dis">Sello discográfico, menú desplegable cerrado</string>
     <string name="barra_busqueda">Barra de Busqueda</string>
     <string name="asociar_album">Asociar Álbum</string>
-    <string name="confirm_associate_album">¿Quieres asociar el álbum "%1$s" al artista?</string>
-    <string name="dialog_message_album_artist">Mensaje del diálogo: ¿Quieres asociar el álbum "%1$s" al artista?</string>
+    <string name="confirm_associate_album">¿Quieres asociar el álbum  al artista?</string>
+    <string name="dialog_message_album_artist">Mensaje del diálogo: ¿Quieres asociar el álbum al artista?</string>
     <string name="button_accept_associate_album">Botón aceptar para asociar álbum</string>
     <string name="acept">Aceptar</string>
     <string name="cancelar">Cancelar</string>

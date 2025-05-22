@@ -22,8 +22,8 @@
     <string name="menu_cerradp_dis">Record label, close drop-down menu</string>
     <string name="barra_busqueda">Search Bar</string>
     <string name="asociar_album">Associate Album</string>
-    <string name="confirm_associate_album">Do you want to associate the album "%1$s" to the artist?</string>
-    <string name="dialog_message_album_artist">Dialog message: Do you want to associate the album "%1$s" to the artist?</string>
+    <string name="confirm_associate_album">Do you want to associate the album to the artist?</string>
+    <string name="dialog_message_album_artist">Dialog message: Do you want to associate the album to the artist?</string>
     <string name="button_accept_associate_album">Accept button to associate album</string>
     <string name="acept">Confirm</string>
     <string name="cancelar">Cancel</string>

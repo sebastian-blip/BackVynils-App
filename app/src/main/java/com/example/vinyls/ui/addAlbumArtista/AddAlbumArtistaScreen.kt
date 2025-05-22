@@ -48,8 +48,7 @@ fun AddAlbumArtistaScreen(
     var selectedAlbum by remember { mutableStateOf<Album?>(null) }
     val context = LocalContext.current
 
-    val message = context.getString(R.string.confirm_associate_album, selectedAlbum!!.name)
-    val dialogMessage = context.getString(R.string.dialog_message_album_artist, selectedAlbum!!.name)
+    val dialogMessage = stringResource(R.string.dialog_message_album_artist)
     val botonAceptar = stringResource(R.string.button_accept_associate_album)
     val textcancel = stringResource(R.string.button_cancel_dialog)
 
@@ -69,7 +68,7 @@ fun AddAlbumArtistaScreen(
             },
             text = {
                 Text(
-                    message,
+                    stringResource(R.string.confirm_associate_album),
                     color = Color.White,
                     modifier = Modifier.semantics {
                         contentDescription = dialogMessage
