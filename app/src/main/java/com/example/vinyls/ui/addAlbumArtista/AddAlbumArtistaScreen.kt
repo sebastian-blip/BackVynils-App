@@ -33,6 +33,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
+
 
 
 @Composable
@@ -46,26 +48,31 @@ fun AddAlbumArtistaScreen(
     var selectedAlbum by remember { mutableStateOf<Album?>(null) }
     val context = LocalContext.current
 
+    val message = context.getString(R.string.confirm_associate_album, selectedAlbum!!.name)
+    val dialogMessage = context.getString(R.string.dialog_message_album_artist, selectedAlbum!!.name)
+    val botonAceptar = stringResource(R.string.button_accept_associate_album)
+    val textcancel = stringResource(R.string.button_cancel_dialog)
+
 
     if (showDialog && selectedAlbum != null) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = {
                 Text(
-                    "Asociar Álbum",
+                    stringResource(R.string.asociar_album),
                     color = Color.White,
                     modifier = Modifier.semantics {
-                        // Describe el título para lectores de pantalla
+
                         contentDescription = "Título del diálogo: Asociar Álbum"
                     }
                 )
             },
             text = {
                 Text(
-                    "¿Quieres asociar el álbum \"${selectedAlbum!!.name}\" al artista?",
+                    message,
                     color = Color.White,
                     modifier = Modifier.semantics {
-                        contentDescription = "Mensaje del diálogo: ¿Quieres asociar el álbum ${selectedAlbum!!.name} al artista?"
+                        contentDescription = dialogMessage
                     }
                 )
             },
@@ -93,20 +100,20 @@ fun AddAlbumArtistaScreen(
                         )
                     },
                     modifier = Modifier.semantics {
-                        contentDescription = "Botón aceptar para asociar álbum"
+                        contentDescription = botonAceptar
                     }
                 ) {
-                    Text("Aceptar", color = Color.Green)
+                    Text(stringResource(R.string.acept), color = Color.Green)
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showDialog = false },
                     modifier = Modifier.semantics {
-                        contentDescription = "Botón cancelar para cerrar el diálogo"
+                        contentDescription = textcancel
                     }
                 ) {
-                    Text("Cancelar", color = Color.Red)
+                    Text(stringResource(R.string.cancelar), color = Color.Red)
                 }
             },
             containerColor = Color.DarkGray
@@ -196,7 +203,7 @@ fun SearchBar(
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        placeholder = { Text("Buscar Album", color = Color.Gray) },
+        placeholder = { Text(stringResource(R.string.barra_busqueda), color = Color.Gray) },
         leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Buscar", tint = Color.White) },
         colors = OutlinedTextFieldDefaults.colors(
             errorTextColor = Color.Black,

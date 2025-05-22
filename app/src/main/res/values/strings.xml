@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Vinyls</string>
+    <string name="crear_album">Crear Álbum</string>
+    <string name="campo_obligatorio">Campo obligatorio</string>
+    <string name="nombre_supera_longitud">El nombre supera la longitud permitida</string>
+    <string name="url_supera_longitud">La URL supera la longitud permitida</string>
+    <string name="fecha_lanzamiento_label">Fecha de lanzamiento (YYYY-MM-DD)</string>
+    <string name="descripcion_supera_longitud">La descripción supera la longitud permitida</string>
+    <string name="nombre">Nombre</string>
+    <string name="url_portada">URL de la portada</string>
+    <string name="descripcion">Descripción</string>
+    <string name="genero">Género</string>
+    <string name="sello_discografico">Sello discográfico</string>
+    <string name="album_creado_exito">✅ Álbum creado exitosamente</string>
+    <string name="boton_crear_album">Botón para crear álbum</string>
+    <string name="volver_lista_albumes">← Volver a lista de álbumes</string>
+    <string name="abrir_menu">Abrir menú</string>
+    <string name="buscar_album">Buscar Album</string>
+    <string name="menu_abierto_gen">Género musical, menú desplegable abierto</string>
+    <string name="menu_cerradp_gen">Género musical, menú desplegable cerrado</string>
+    <string name="menu_abierto_dis">Sello discográfico, menú desplegable abierto</string>
+    <string name="menu_cerradp_dis">Sello discográfico, menú desplegable cerrado</string>
+    <string name="barra_busqueda">Barra de Busqueda</string>
+    <string name="asociar_album">Asociar Álbum</string>
+    <string name="confirm_associate_album">¿Quieres asociar el álbum "%1$s" al artista?</string>
+    <string name="dialog_message_album_artist">Mensaje del diálogo: ¿Quieres asociar el álbum "%1$s" al artista?</string>
+    <string name="button_accept_associate_album">Botón aceptar para asociar álbum</string>
+    <string name="acept">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="button_cancel_dialog">Botón cancelar para cerrar el diálogo</string>
+
 </resources>

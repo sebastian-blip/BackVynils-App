@@ -29,6 +29,7 @@ import com.example.vinyls.viewmodels.AlbumListViewModel
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel = viewModel()) {
@@ -122,7 +123,7 @@ fun HomeHeader() {
             painter = painterResource(id = R.drawable.menu_icon),
             contentDescription = "Imágen menú",
             modifier = Modifier
-                .semantics { contentDescription = "Imàen Menù" }
+                .semantics { contentDescription = "Imagen Menù" }
                 .height(80.dp)
                 .padding(10.dp)
         )
@@ -131,13 +132,14 @@ fun HomeHeader() {
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
+    val textBusqueda = stringResource(R.string.barra_busqueda)
     OutlinedTextField(
         value = "",
         onValueChange = {},
-        placeholder = { Text("Buscar artista", color = Color.Gray) },
+        placeholder = { Text(stringResource(R.string.buscar_album), color = Color.Gray) },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color.White) },
         modifier = modifier
-            .semantics { contentDescription = "Barra de Busqueda" }
+            .semantics { contentDescription = textBusqueda }
             .padding(vertical = 8.dp)
             .clip(RoundedCornerShape(12.dp)),
         colors = TextFieldDefaults.colors(
@@ -156,6 +158,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun AddAlbumButton(navController: NavController) {
+    val textCreate = stringResource(R.string.crear_album)
     IconButton(
         onClick = {
             navController.navigate("crear_album")
