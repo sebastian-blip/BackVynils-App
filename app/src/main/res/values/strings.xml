@@ -34,6 +34,12 @@
     <string name="boton_siguente">Siguiente</string>
     <string name="titulo_asociar_album">Título del diálogo: Asociar Álbum</string>
     <string name="foto_artista">Foto Artista</string>
-
+    <string name="artist_list_title">Listado de artistas</string>
+    <string name="artist_list_logo_desc">Logo de Vinyls</string>
+    <string name="artist_list_menu_desc">Menú</string>
+    <string name="artist_list_empty">No hay artistas disponibles</string>
+    <string name="pagination_previous">Ir a página anterior</string>
+    <string name="pagination_next">Ir a página siguiente</string>
+    <string name="pagination_page">Página %1$d</string>
 
 </resources>

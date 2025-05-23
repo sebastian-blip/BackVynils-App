@@ -34,4 +34,11 @@
     <string name="boton_siguente">Next Page Button</string>
     <string name="titulo_asociar_album">Dialog Title: Associate Album</string>
     <string name="foto_artista">Artist photo</string>
+    <string name="artist_list_title">Artists list</string>
+    <string name="artist_list_logo_desc">Vinyls logo</string>
+    <string name="artist_list_menu_desc">Menu</string>
+    <string name="artist_list_empty">No artists available</string>
+    <string name="pagination_previous">Go to previous page</string>
+    <string name="pagination_next">Go to next page</string>
+    <string name="pagination_page">Page %1$d</string>
 </resources>
