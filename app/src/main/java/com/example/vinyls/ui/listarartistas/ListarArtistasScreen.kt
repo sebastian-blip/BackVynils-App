@@ -38,7 +38,7 @@ fun ListarArtistasScreen(navController: NavController) {
         viewModel.cargarArtistas()
     }
 
-    // preparamos las descripciones accesibles
+    // Descripciones accesibles para paginación
     val descPrev = stringResource(R.string.pagination_previous)
     val descNext = stringResource(R.string.pagination_next)
 
@@ -47,7 +47,29 @@ fun ListarArtistasScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            // … header y loading quedarán igual …
+            // Header
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.logo_vinyls),
+                    contentDescription = stringResource(R.string.artist_list_logo_desc),
+                    modifier = Modifier
+                        .height(60.dp)
+                        .clickable { navController.navigate("home") }
+                )
+                Image(
+                    painter = painterResource(R.drawable.menu_icon),
+                    contentDescription = stringResource(R.string.artist_list_menu_desc),
+                    modifier = Modifier.height(40.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             if (viewModel.cargando) {
                 CircularProgressIndicator(
@@ -55,7 +77,22 @@ fun ListarArtistasScreen(navController: NavController) {
                     color = Color.White
                 )
             } else {
-                // Grid de artistas paginados…
+                // Grid de artistas paginados
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp),
+                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(viewModel.artistasPaginados) { artista ->
+                        ArtistaItem(artista = artista) {
+                            navController.navigate("detalle_artista/${artista.id}")
+                        }
+                    }
+                }
 
                 // Paginación
                 Row(
@@ -75,9 +112,7 @@ fun ListarArtistasScreen(navController: NavController) {
                     }
 
                     for (i in 1..viewModel.totalPaginas) {
-                        // calculamos la descripción *dentro* de la composable
                         val descPage = stringResource(R.string.pagination_page, i)
-
                         TextButton(
                             onClick = { viewModel.irAPagina(i) },
                             modifier = Modifier.semantics {
@@ -105,7 +140,7 @@ fun ListarArtistasScreen(navController: NavController) {
             }
         }
     }
-} // cierra ListarArtistasScreen
+}
 
 @Composable
 fun ArtistaItem(
