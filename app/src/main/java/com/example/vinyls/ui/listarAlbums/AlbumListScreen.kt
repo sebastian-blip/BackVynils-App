@@ -29,12 +29,16 @@ import com.example.vinyls.viewmodels.AlbumListViewModel
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel = viewModel()) {
     val albums by viewModel.albums.collectAsState()
     val currentPage by viewModel.currentPage.collectAsState()
     val itemsPerPage = 6
+    val textBack = stringResource(R.string.ir_atras)
+    val textNext = stringResource(R.string.siguente)
+    val textBotonNext = stringResource(R.string.boton_siguente)
 
     LaunchedEffect(Unit) {
         viewModel.loadAlbums()
@@ -86,7 +90,7 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
             val isPreviousEnabled = currentPage > 1
 
             IconButton(onClick = { viewModel.previousPage() }, enabled = isPreviousEnabled) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Anterior", tint = Color.White)
+                Icon(Icons.Filled.ArrowBack, contentDescription = textBack, tint = Color.White)
             }
 
             Text(text = "$currentPage", color = Color.White)
@@ -94,9 +98,9 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
             IconButton(onClick = {
                 viewModel.nextPage() }, enabled = isNextEnabled,
                 modifier = Modifier
-                    .semantics { contentDescription = "Botòn Siguiente Pàgina" }
+                    .semantics { contentDescription = textBotonNext }
                     .testTag("boton_siguiente")) {
-                Icon(Icons.Filled.ArrowForward, contentDescription = "Siguiente", tint = Color.White)
+                Icon(Icons.Filled.ArrowForward, contentDescription = textNext, tint = Color.White)
             }
         }
     }
@@ -104,6 +108,7 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
 
 @Composable
 fun HomeHeader() {
+    val textPortada =  stringResource(R.string.portada_album)
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -120,9 +125,9 @@ fun HomeHeader() {
 
         Image(
             painter = painterResource(id = R.drawable.menu_icon),
-            contentDescription = "Imágen menú",
+            contentDescription = textPortada,
             modifier = Modifier
-                .semantics { contentDescription = "Imàen Menù" }
+                .semantics { contentDescription = textPortada }
                 .height(80.dp)
                 .padding(10.dp)
         )
@@ -131,13 +136,14 @@ fun HomeHeader() {
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
+    val textBusqueda = stringResource(R.string.barra_busqueda)
     OutlinedTextField(
         value = "",
         onValueChange = {},
-        placeholder = { Text("Buscar artista", color = Color.Gray) },
+        placeholder = { Text(stringResource(R.string.buscar_album), color = Color.Gray) },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color.White) },
         modifier = modifier
-            .semantics { contentDescription = "Barra de Busqueda" }
+            .semantics { contentDescription = textBusqueda }
             .padding(vertical = 8.dp)
             .clip(RoundedCornerShape(12.dp)),
         colors = TextFieldDefaults.colors(
@@ -156,6 +162,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun AddAlbumButton(navController: NavController) {
+    val textCreate = stringResource(R.string.crear_album)
     IconButton(
         onClick = {
             navController.navigate("crear_album")
@@ -163,7 +170,7 @@ fun AddAlbumButton(navController: NavController) {
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Agregar álbum",
+            contentDescription = textCreate,
             tint = Color.Red,
             modifier = Modifier
                 .size(32.dp)
