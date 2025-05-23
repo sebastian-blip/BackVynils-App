@@ -182,7 +182,7 @@ fun SectionTitle(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = description,
+                        contentDescription = "agregar premio",
                         tint = Color.Red,
                         modifier = Modifier.size(28.dp)
                     )
@@ -198,7 +198,7 @@ fun SectionTitle(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = description,
+                        contentDescription = "Ir a sección $title",
                         tint = Color.Black,
                         modifier = Modifier.size(20.dp)
                     )
@@ -223,7 +223,10 @@ fun ArtistList() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(end = 16.dp)
             ) {
-                CircleAvatar(imageResId = artist.imageResId)
+                CircleAvatar(
+                    imageResId = artist.imageResId,
+                    contentDescription = "Avatar de ${artist.name}"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = artist.name,
@@ -241,7 +244,7 @@ fun ArtistList() {
 }
 
 @Composable
-fun CircleAvatar(imageResId: Int) {
+fun CircleAvatar(imageResId: Int, contentDescription: String) {
     Box(
         modifier = Modifier
             .size(78.dp)
@@ -249,13 +252,12 @@ fun CircleAvatar(imageResId: Int) {
     ) {
         Image(
             painter = painterResource(id = imageResId),
-            contentDescription = "Avatar",
+            contentDescription = contentDescription,
             modifier = Modifier
                 .size(78.dp)
                 .clip(CircleShape)
                 .align(Alignment.Center),
             contentScale = ContentScale.Crop
-
         )
     }
 }
@@ -290,7 +292,7 @@ fun AlbumList() {
                 ){
                     Image(
                         painter = painterResource(id = album.imageResId),
-                        contentDescription = "Avatar_album",
+                        contentDescription = "Álbum ${album.name} por ${album.album_artist}",
                         modifier = Modifier
                             .fillMaxSize(),
                         contentScale = ContentScale.Crop
@@ -331,7 +333,10 @@ fun AwardsList() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(end = 16.dp)
             ) {
-                CircleAvatar(imageResId = award.imageResId)
+                CircleAvatar(
+                    imageResId = award.imageResId,
+                    contentDescription = "Premio: ${award.name}"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = award.name,

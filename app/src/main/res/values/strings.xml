@@ -34,6 +34,15 @@
     <string name="boton_siguente">Siguiente</string>
     <string name="titulo_asociar_album">Título del diálogo: Asociar Álbum</string>
     <string name="foto_artista">Foto Artista</string>
-
-
+    <string name="crear_premios">Crear Premios</string>
+    <string name="trofeo">Trofeo</string>
+    <string name="organizacion">Organización</string>
+    <string name="error_nombre_vacio">El nombre no puede estar vacío</string>
+    <string name="error_descripcion_vacia">La descripción no puede estar vacía</string>
+    <string name="error_organizacion_vacia">La organización no puede estar vacía</string>
+    <string name="crear">Crear</string>
+    <string name="premio_creado">🎉 Premio creado exitosamente</string>
+    <string name="error_crear_premio">❌ Error: %1$s</string>
+    <string name="logo_vinyls">Logo de Vinyls</string>
+    <string name="menu">Menú</string>
 </resources>

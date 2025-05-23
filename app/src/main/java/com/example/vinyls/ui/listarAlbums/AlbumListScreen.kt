@@ -89,18 +89,29 @@ fun AlbumListScreen(navController: NavController, viewModel: AlbumListViewModel 
             val isNextEnabled = albums.size >= itemsPerPage
             val isPreviousEnabled = currentPage > 1
 
-            IconButton(onClick = { viewModel.previousPage() }, enabled = isPreviousEnabled) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = textBack, tint = Color.White)
+            IconButton(
+                onClick = { viewModel.previousPage() },
+                enabled = isPreviousEnabled
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Página anterior",
+                    tint = Color.White
+                )
             }
 
             Text(text = "$currentPage", color = Color.White)
 
-            IconButton(onClick = {
-                viewModel.nextPage() }, enabled = isNextEnabled,
-                modifier = Modifier
-                    .semantics { contentDescription = textBotonNext }
-                    .testTag("boton_siguiente")) {
-                Icon(Icons.Filled.ArrowForward, contentDescription = textNext, tint = Color.White)
+            IconButton(
+                onClick = { viewModel.nextPage() },
+                enabled = isNextEnabled,
+                modifier = Modifier.testTag("boton_siguiente")
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowForward,
+                    contentDescription = "Siguiente página",
+                    tint = Color.White
+                )
             }
         }
     }

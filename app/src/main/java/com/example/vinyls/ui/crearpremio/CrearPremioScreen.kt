@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.example.vinyls.R
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
@@ -48,7 +49,6 @@ fun CrearPremioScreen(navController: NavController) {
                 .padding(innerPadding)
                 .verticalScroll(scrollState)
         ) {
-            // 🟣 Navbar
             HeaderVinyls(navController)
 
             Column(
@@ -59,7 +59,7 @@ fun CrearPremioScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Crear Premios",
+                    text = stringResource(R.string.crear_premios),
                     color = Color(0xFFE57373),
                     style = MaterialTheme.typography.headlineMedium
                 )
@@ -73,7 +73,7 @@ fun CrearPremioScreen(navController: NavController) {
                     Box(contentAlignment = Alignment.Center) {
                         Image(
                             painter = painterResource(id = R.drawable.trophy_icon),
-                            contentDescription = "Trofeo",
+                            contentDescription = stringResource(R.string.trofeo),
                             modifier = Modifier.size(180.dp)
                         )
                     }
@@ -85,10 +85,10 @@ fun CrearPremioScreen(navController: NavController) {
                         viewModel.nombre = it
                         nombreError = false
                     },
-                    label = { Text("Nombre") },
+                    label = { Text(stringResource(R.string.nombre)) },
                     isError = nombreError,
                     supportingText = {
-                        if (nombreError) Text("El nombre no puede estar vacío", color = Color.Red)
+                        if (nombreError) Text(stringResource(R.string.error_nombre_vacio), color = Color.Red)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -106,10 +106,10 @@ fun CrearPremioScreen(navController: NavController) {
                         viewModel.descripcion = it
                         descripcionError = false
                     },
-                    label = { Text("Descripción") },
+                    label = { Text(stringResource(R.string.descripcion)) },
                     isError = descripcionError,
                     supportingText = {
-                        if (descripcionError) Text("La descripción no puede estar vacía", color = Color.Red)
+                        if (descripcionError) Text(stringResource(R.string.error_descripcion_vacia), color = Color.Red)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -127,10 +127,10 @@ fun CrearPremioScreen(navController: NavController) {
                         viewModel.organizacion = it
                         organizacionError = false
                     },
-                    label = { Text("Organización") },
+                    label = { Text(stringResource(R.string.organizacion)) },
                     isError = organizacionError,
                     supportingText = {
-                        if (organizacionError) Text("La organización no puede estar vacía", color = Color.Red)
+                        if (organizacionError) Text(stringResource(R.string.error_organizacion_vacia), color = Color.Red)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -156,21 +156,25 @@ fun CrearPremioScreen(navController: NavController) {
                             viewModel.crearPremio(
                                 onSuccess = {
                                     scope.launch {
-                                        snackbarHostState.showSnackbar("🎉 Premio creado exitosamente")
+                                        snackbarHostState.showSnackbar(
+                                            message = context.getString(R.string.premio_creado)
+                                        )
                                     }
                                 },
                                 onError = {
                                     scope.launch {
-                                        snackbarHostState.showSnackbar("❌ Error: ${it.message}")
+                                        snackbarHostState.showSnackbar(
+                                            message = context.getString(R.string.error_crear_premio, it.message)
+                                        )
                                     }
                                 }
                             )
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Crear", color = Color.White)
+                    Text(stringResource(R.string.crear), color = Color.White)
                 }
             }
         }
@@ -188,14 +192,14 @@ fun HeaderVinyls(navController: NavController) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_vinyls),
-            contentDescription = "Logo de Vinyls",
+            contentDescription = stringResource(R.string.logo_vinyls),
             modifier = Modifier
                 .height(60.dp)
                 .clickable { navController.navigate("home") }
         )
         Image(
             painter = painterResource(id = R.drawable.menu_icon),
-            contentDescription = "Menú",
+            contentDescription = stringResource(R.string.menu),
             modifier = Modifier.height(40.dp)
         )
     }

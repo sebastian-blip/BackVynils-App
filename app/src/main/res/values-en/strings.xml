@@ -34,4 +34,15 @@
     <string name="boton_siguente">Next Page Button</string>
     <string name="titulo_asociar_album">Dialog Title: Associate Album</string>
     <string name="foto_artista">Artist photo</string>
+    <string name="crear_premios">Create Awards</string>
+    <string name="trofeo">Trophy</string>
+    <string name="organizacion">Organization</string>
+    <string name="error_nombre_vacio">Name cannot be empty</string>
+    <string name="error_descripcion_vacia">Description cannot be empty</string>
+    <string name="error_organizacion_vacia">Organization cannot be empty</string>
+    <string name="crear">Create</string>
+    <string name="premio_creado">🎉 Award successfully created</string>
+    <string name="error_crear_premio">❌ Error: %1$s</string>
+    <string name="logo_vinyls">Vinyls logo</string>
+    <string name="menu">Menu</string>
 </resources>
