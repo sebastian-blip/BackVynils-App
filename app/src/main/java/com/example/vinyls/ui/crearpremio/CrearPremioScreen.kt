@@ -167,7 +167,7 @@ fun CrearPremioScreen(navController: NavController) {
                             )
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Crear", color = Color.White)

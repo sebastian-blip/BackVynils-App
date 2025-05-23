@@ -104,7 +104,7 @@ fun DataCoverAlbum (album: Album) {
         // Imagen del álbum
         Image(
             painter = rememberImagePainter(data = album.cover),
-            contentDescription = album.name,
+            contentDescription = "Portada del álbum ${album.name}",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
@@ -219,7 +219,7 @@ fun TabContentTracks(canciones: List<Track>, albumCoverUrl: String) {
                 ) {
                     Image(
                         painter = rememberImagePainter(data = albumCoverUrl),
-                        contentDescription = "Cover del álbum",
+                        contentDescription = "Portada del álbum para la canción ${track.name}",
                         modifier = Modifier
                             .height(50.dp)
                             .width(50.dp)
