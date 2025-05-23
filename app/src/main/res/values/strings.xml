@@ -28,5 +28,12 @@
     <string name="acept">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="button_cancel_dialog">Botón cancelar para cerrar el diálogo</string>
+    <string name="portada_album">Portada del álbum</string>
+    <string name="ir_atras">Anterior</string>
+    <string name="siguente">Siguiente</string>
+    <string name="boton_siguente">Siguiente</string>
+    <string name="titulo_asociar_album">Título del diálogo: Asociar Álbum</string>
+    <string name="foto_artista">Foto Artista</string>
+
 
 </resources>

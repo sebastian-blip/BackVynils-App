@@ -51,6 +51,7 @@ fun CrearAlbumScreen(navController: NavController) {
     var URLObligatoriaError by remember { mutableStateOf(false) }
     var URLError by remember { mutableStateOf(false) }
 
+
     val context = LocalContext.current
     val viewModel: CrearAlbumViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application)
@@ -70,6 +71,7 @@ fun CrearAlbumScreen(navController: NavController) {
     val openMenuDis =  stringResource(R.string.menu_abierto_dis)
     val createAlbum =  stringResource(R.string.crear_album)
     val textBack =  stringResource(R.string.volver_lista_albumes)
+    val textPortada = stringResource(R.string.portada_album)
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -100,7 +102,7 @@ fun CrearAlbumScreen(navController: NavController) {
 
                 AsyncImage(
                     model = viewModel.cover,
-                    contentDescription = "Portada del álbum",
+                    contentDescription =  textPortada,
                     modifier = Modifier
                         .size(220.dp)
                         .clip(CircleShape),
