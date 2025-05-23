@@ -29,7 +29,8 @@ import android.net.Uri
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 
 @Composable
 fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
@@ -214,11 +215,24 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
 @Composable
 fun AlbumItem(album: Album) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Text(album.name, color = Color.White, fontWeight = FontWeight.Medium)
-        Text("Lanzamiento: ${album.releaseDate.split("T").firstOrNull() ?: album.releaseDate}", color = Color.Gray)
+    val fechaFormateada = album.releaseDate.split("T").firstOrNull() ?: album.releaseDate
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .semantics(mergeDescendants = true) {} // <-- esto es clave
+    ) {
+        Text(
+            text = album.name,
+            color = Color.White,
+            fontWeight = FontWeight.Medium
+        )
+        Text(
+            text = "Lanzamiento: $fechaFormateada",
+            color = Color.Gray
+        )
     }
 }
+
 
 
 @Composable
@@ -258,7 +272,12 @@ fun DetalleHeader(navController: NavController) {
 }
 
 @Composable
-fun AddAlbumButton(navController: NavController, artistaId: Int, artistaNombre: String, artistaImagenUrl: String, ) {
+fun AddAlbumButton(
+    navController: NavController,
+    artistaId: Int,
+    artistaNombre: String,
+    artistaImagenUrl: String
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -276,6 +295,3 @@ fun AddAlbumButton(navController: NavController, artistaId: Int, artistaNombre: 
         Text("Agregar álbum", color = Color.White)
     }
 }
-
-
-

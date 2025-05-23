@@ -51,7 +51,7 @@ fun LoginScreen(onContinueClick: () -> Unit) {
         OutlinedTextField(
             value = email.value,
             onValueChange = { email.value = it },
-            placeholder = { Text(text = "email@domain.com", color = Color.Gray) },
+            placeholder = { Text(text = "email@domain.com", color = Color(0xFF555555)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -75,22 +75,23 @@ fun LoginScreen(onContinueClick: () -> Unit) {
                 .height(50.dp)
                 .padding(vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFEC7063)
+                containerColor = Color(0xFFC0392B)
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(text = "Continue", color = Color.White)
         }
 
-        // Texto de términos con estilo especial
+        val accessibleRed = Color(0xFFFF5252)
+
         Text(
             text = buildAnnotatedString {
                 append("By clicking continue, you agree to our ")
-                withStyle(style = SpanStyle(color = Color.Red)) {
+                withStyle(style = SpanStyle(color = accessibleRed)) {
                     append("Terms of Service")
                 }
                 append(" and ")
-                withStyle(style = SpanStyle(color = Color.Red)) {
+                withStyle(style = SpanStyle(color = accessibleRed)) {
                     append("Privacy Policy")
                 }
             },

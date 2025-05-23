@@ -21,7 +21,7 @@ class CrearPremioScreenTest {
             composeTestRule.onAllNodesWithText("Premios").fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeTestRule.onNodeWithContentDescription("addPremioButton").performClick()
+        composeTestRule.onNodeWithContentDescription("agregar premio").performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodesWithText("Crear Premios").fetchSemanticsNodes().isNotEmpty()
