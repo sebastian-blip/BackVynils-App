@@ -23,7 +23,7 @@ class DetalleArtistaScreenTest {
         }
 
         // Paso 3: Ir a la lista de artistas
-        composeTestRule.onNodeWithContentDescription("addArtisButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Artistas").performClick()
 
         // Paso 4: Esperar que aparezca el artista
         composeTestRule.waitUntil(timeoutMillis = 15_000) {
