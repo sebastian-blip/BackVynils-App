@@ -59,6 +59,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.volley)
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.material3:material3:1.2.0-alpha02")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation(libs.navigation.compose)
 

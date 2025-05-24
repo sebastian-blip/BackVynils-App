@@ -26,12 +26,18 @@ import com.example.vinyls.R
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Album
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Premio
 import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.contentDescription
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     val context = LocalContext.current
@@ -40,9 +46,103 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     )
 
     val scroll = rememberScrollState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showModal by remember { mutableStateOf(false) }
+
+    val premiosFake = listOf(
+        "Premio Grammy 2020",
+        "Billboard Music Award 2018",
+        "MTV Europe Music Award 2017",
+        "Latin Grammy 2019",
+        "Premio Lo Nuestro 2021",
+        "American Music Award 2016",
+        "Premio Grammy 2021",
+        "Billboard Music Award 2318",
+        "MTV Europe Music Award 2317",
+        "Latin Grammy 2319",
+        "Premio Lo Nuestro 2321",
+        "American Music Award 2316",
+    )
+
+    var selectedPremio by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(artistaId) {
         viewModel.cargarArtista(artistaId)
+    }
+
+    if (showModal) {
+        ModalBottomSheet(
+            onDismissRequest = { showModal = false },
+            sheetState = sheetState,
+            containerColor = Color.DarkGray,
+            contentColor = Color.White,
+            scrimColor = Color.Black.copy(alpha = 0.7f)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 400.dp) // Altura del modal
+                    .padding(start = 12.dp, end = 12.dp, top = 2.dp, bottom = 12.dp) //Distancia entre el borde superior del modal y el titulo
+            ) {
+                Text(
+                    text = "Agregar premios",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 16.dp)
+                )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = false)
+                ) {
+                    items(premiosFake) { premio ->
+                        val isSelected = selectedPremio == premio
+                        val backgroundColor = if (isSelected) Color.Black else Color.White
+                        val contentColor = if (isSelected) Color.White else Color.Black
+                        val borderColor = if (isSelected) Color.White else Color.Transparent
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp)
+                                .clickable { selectedPremio = premio }
+                                .border(
+                                    width = 2.dp,
+                                    color = borderColor,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .background(backgroundColor, shape = RoundedCornerShape(12.dp))
+                                .padding(vertical = 14.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = premio,
+                                color = contentColor,
+                                fontSize = 15.sp, // Tamaño del  nombre de un premio
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        showModal = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Text("Continue", fontWeight = FontWeight.Bold)
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -100,7 +200,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable {
-                            // Implementar logica para abrir modal
+                            showModal = true
                         }
                     ) {
                         Icon(
