@@ -52,6 +52,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     var selectedPremio by remember { mutableStateOf<DetalleArtistaViewModel.Premio?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
     var showSuccessSnackbar by remember { mutableStateOf(false) }
+    var selectedTabIndex by remember { mutableStateOf(0) }
 
 
     LaunchedEffect(artistaId) {
@@ -156,8 +157,8 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                     viewModel.asociarPremioAlArtista(artistaId, selectedPremio!!)
                     showConfirmDialog = false
                     selectedPremio = null
-                    viewModel.cargarArtista(artistaId) // Refresh de la información del artista después de que se asocia un premio
                     showSuccessSnackbar = true
+                    selectedTabIndex = 1
                  }) {
                     Text("Aceptar", color = Color(0xFF4CAF50))
                 }
@@ -291,7 +292,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                var selectedTabIndex by remember { mutableStateOf(0) }
+                //var selectedTabIndex by remember { mutableStateOf(0) }
                 val tabs = listOf("Álbumes", "Premios")
 
                 TabRow(

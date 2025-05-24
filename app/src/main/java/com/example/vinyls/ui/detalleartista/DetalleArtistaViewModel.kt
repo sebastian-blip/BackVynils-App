@@ -17,9 +17,10 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
     var imagenUrl by mutableStateOf("")
     var birthDate by mutableStateOf("")
     var albums by mutableStateOf<List<Album>>(emptyList())
-    var premios by mutableStateOf<List<Premio>>(emptyList())
     var cargando by mutableStateOf(false)
     var premiosDisponibles by mutableStateOf<List<Premio>>(emptyList())
+    private val _premios = mutableStateListOf<Premio>()
+    val premios: List<Premio> get() = _premios
 
     fun cargarArtista(id: Int = 1) {
         cargando = true
@@ -57,7 +58,8 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                                 null
                             }
                         }
-                        premios = premiosCargados
+                        _premios.clear()
+                        _premios.addAll(premiosCargados)
                         cargando = false
                     }
                 },
@@ -131,7 +133,12 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                 premioId = premio.id,
                 premiationDate = premiationDate,
                 onSuccess = {
-                    cargarArtista(artistaId)
+                    val premioConFecha = premio.copy(premiationDate = premiationDate)
+
+                    // Solo agregar al cache si no está aún
+                    if (_premios.none { it.id == premioConFecha.id }) {
+                        _premios.add(premioConFecha)
+                    }
                 },
                 onError = {
                     println("Error al asociar premio: ${it.message}")
