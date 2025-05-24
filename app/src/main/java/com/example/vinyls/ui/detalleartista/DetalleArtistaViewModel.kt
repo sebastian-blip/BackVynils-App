@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vinyls.repositories.ArtistaRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
 class DetalleArtistaViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,6 +29,7 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
             repository.getArtista(
                 id,
                 onSuccess = { json ->
+                    println("JSON completo del artista:\n${json.toString(2)}")
                     nombre = json.getString("name")
                     descripcion = json.getString("description")
                     imagenUrl = json.getString("image")
@@ -35,29 +37,32 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                     albums = json.getJSONArray("albums").toAlbumList()
 
                     val performerPrizesArray = json.getJSONArray("performerPrizes")
-                    val premioIds = mutableListOf<Int>()
+                    println("performerPrizes: $performerPrizesArray")
 
-                    for (i in 0 until performerPrizesArray.length()) {
-                        val premioId = performerPrizesArray.getJSONObject(i).getInt("id")
-                        premioIds.add(premioId)
-                    }
-
-                    // Corrutina para cargar los premios
+                    // 👇 Ejecutamos carga de premios con suspend dentro de contexto adecuado
                     viewModelScope.launch {
-                        val premiosCargados = premioIds.mapNotNull { premioId ->
-                            try {
-                                val premioJson = repository.getPremioPorIdSuspend(premioId)
-                                Premio(
-                                    id = premioJson.getInt("id"),
-                                    name = premioJson.getString("name"),
-                                    organization = premioJson.getString("organization"),
-                                    description = premioJson.getString("description")
-                                )
-                            } catch (e: Exception) {
-                                println("Error al cargar premio con ID $premioId: ${e.message}")
-                                null
+                        val premiosCargados = withContext(kotlinx.coroutines.Dispatchers.IO) {
+                            (0 until performerPrizesArray.length()).mapNotNull { i ->
+                                val premioObj = performerPrizesArray.getJSONObject(i)
+                                val premioId = premioObj.getInt("id")
+                                val premiationDate = premioObj.optString("premiationDate", null)
+
+                                try {
+                                    val premioJson = repository.getPremioPorIdSuspend(premioId)
+                                    Premio(
+                                        id = premioJson.getInt("id"),
+                                        name = premioJson.getString("name"),
+                                        organization = premioJson.getString("organization"),
+                                        description = premioJson.getString("description"),
+                                        premiationDate = premiationDate
+                                    )
+                                } catch (e: Exception) {
+                                    println("Error al cargar premio con ID $premioId: ${e.message}")
+                                    null
+                                }
                             }
                         }
+
                         _premios.clear()
                         _premios.addAll(premiosCargados)
                         cargando = false
@@ -70,6 +75,7 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
             )
         }
     }
+
 
     // Modelos internos
     data class Album(
