@@ -19,11 +19,11 @@ class ListarArtistasScreenTest {
 
         // Paso 2: Esperar a que aparezca el botón para ir a lista de artistas
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
-            composeTestRule.onAllNodesWithContentDescription("addArtisButton").fetchSemanticsNodes().isNotEmpty()
+            composeTestRule.onAllNodesWithContentDescription("Ir a sección Artistas").fetchSemanticsNodes().isNotEmpty()
         }
 
         // Paso 3: Ir a ListarArtistasScreen
-        composeTestRule.onNodeWithContentDescription("addArtisButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Artistas").performClick()
 
         // Paso 4: Esperar a que se cargue la lista
         composeTestRule.waitUntil(timeoutMillis = 10_000) {

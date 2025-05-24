@@ -25,7 +25,7 @@ class ListarAlbumnsTest {
         }
 
         // Ir a pantalla de creación
-        composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Albumes").performClick()
         composeTestRule.waitUntil(5_000) {
             composeTestRule.onAllNodesWithContentDescription("Crear Álbum").fetchSemanticsNodes().isNotEmpty()
         }

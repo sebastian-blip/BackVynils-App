@@ -26,10 +26,12 @@ import com.example.vinyls.R
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Album
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Premio
 import android.net.Uri
+import android.util.Log
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 
 @Composable
@@ -281,7 +283,10 @@ fun AddAlbumButton(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+
+            .testTag("AddAlbumButton")
             .clickable {
+                Log.d("AddAlbumButton", "Clicked. ID=$artistaId")
                 navController.navigate("agregar_album_artista/${artistaId}/${artistaNombre}/${Uri.encode(artistaImagenUrl)}")
             }
     ) {
@@ -289,7 +294,8 @@ fun AddAlbumButton(
             imageVector = Icons.Default.Add,
             contentDescription = "Agregar álbum",
             tint = Color.Red,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text("Agregar álbum", color = Color.White)

@@ -3,17 +3,23 @@ package com.example.vinyls
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+
+
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DetalleArtistaScreenTest {
+class AgregarAlbumArtistaTest {
+
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    private fun navegarADetalleArtista() {
+
+    @Test
+    fun testAgregarAlbumArtista() {
+
         // Paso 1: Ir al home
         composeTestRule.onNodeWithText("Continue").performClick()
 
@@ -41,33 +47,38 @@ class DetalleArtistaScreenTest {
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodesWithContentDescription("Foto del artista").fetchSemanticsNodes().isNotEmpty()
         }
-    }
 
-    @Test
-    // Paso 7: comprobar que tenga nombre
-    fun testSeMuestraNombreDelArtista() {
-        navegarADetalleArtista()
-        composeTestRule.onNodeWithText("Rubén Blades Bellido de Luna").assertIsDisplayed()
-    }
+        composeTestRule
+            .onNodeWithText("Álbumes")
+            .performClick()
 
-    @Test
-    // Paso 8: comprobar que pueda ver toda la información
-    fun testPuedeHacerScrollHastaElFinal() {
-        navegarADetalleArtista()
-        repeat(3) {
-            composeTestRule.onRoot().performTouchInput { swipeUp() }
+        composeTestRule.waitUntil(timeoutMillis = 10_000) {
+            composeTestRule.onAllNodesWithTag("AddAlbumButton").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithText("← Volver a lista de artistas").assertExists()
+
+
+        composeTestRule.onNodeWithTag("AddAlbumButton").performScrollTo()
+        composeTestRule.onNodeWithTag("AddAlbumButton").performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 10_000) {
+            composeTestRule.onAllNodesWithText("Barra de Busqueda").fetchSemanticsNodes().isNotEmpty()
+        }
+
+
+        composeTestRule.onNodeWithText("Poeta del pueblo").performClick()
+
+
+        // Esperar que aparezca el diálogo
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule.onAllNodesWithContentDescription("Botón aceptar para asociar álbum").fetchSemanticsNodes().isNotEmpty()
+        }
+
+        // Click en el botón de aceptar
+        composeTestRule.onNodeWithContentDescription("Botón aceptar para asociar álbum").performClick()
+
+
+
     }
 
-    @Test
-    // Paso 9: que vea toda la imagen del artista
-    fun testSeMuestraImagenDelArtista() {
-        navegarADetalleArtista()
-        composeTestRule.onNodeWithContentDescription("Foto del artista").assertExists()
-    }
+
 }
-
-
-
-

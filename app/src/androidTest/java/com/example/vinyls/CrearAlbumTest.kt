@@ -21,7 +21,7 @@ class CrearAlbumScreenTest {
         }
 
 
-        composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Albumes").performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
