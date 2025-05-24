@@ -1,15 +1,27 @@
-package com.example.vinyls
+package englishTest
 
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.vinyls.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import androidx.compose.ui.test.*
 import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
-class ListarAlbumnsTest {
+class ListarAlbumnsTestEnglis {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
@@ -27,20 +39,20 @@ class ListarAlbumnsTest {
         // Ir a pantalla de creación
         composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
         composeTestRule.waitUntil(5_000) {
-            composeTestRule.onAllNodesWithContentDescription("Crear Álbum").fetchSemanticsNodes().isNotEmpty()
+            composeTestRule.onAllNodesWithContentDescription("Create Album").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithContentDescription("Crear Álbum").performClick()
+        composeTestRule.onNodeWithContentDescription("Create Album").performClick()
 
         // Esperar a que cargue la pantalla
         composeTestRule.waitUntil(10_000) {
-            composeTestRule.onAllNodesWithText("Crear Álbum").fetchSemanticsNodes().isNotEmpty()
+            composeTestRule.onAllNodesWithText("Create Album").fetchSemanticsNodes().isNotEmpty()
         }
 
         // Llenar campos
-        composeTestRule.onNodeWithText("Nombre").performTextInput(randomAlbumName)
-        composeTestRule.onNodeWithText("URL de la portada").performTextInput("https://comodibujar.club/wp-content/uploads/2019/04/oso-panda-kawaii-1.jpg")
-        composeTestRule.onNodeWithText("Fecha de lanzamiento (YYYY-MM-DD)").performTextInput("2025-02-02")
-        composeTestRule.onNodeWithText("Descripción").performTextInput("Álbum 1")
+        composeTestRule.onNodeWithText("Name").performTextInput(randomAlbumName)
+        composeTestRule.onNodeWithText("Cover URL").performTextInput("https://comodibujar.club/wp-content/uploads/2019/04/oso-panda-kawaii-1.jpg")
+        composeTestRule.onNodeWithText("Release date (YYYY-MM-DD)").performTextInput("2025-02-02")
+        composeTestRule.onNodeWithText("Description").performTextInput("Álbum 1")
 
         // Scroll para desplegables
         composeTestRule.onNode(hasScrollAction()).performTouchInput { swipeUp() }
@@ -67,7 +79,7 @@ class ListarAlbumnsTest {
 
         composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Crear Álbum")
+                .onAllNodesWithContentDescription("Create Album")
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
@@ -103,4 +115,3 @@ class ListarAlbumnsTest {
         }
     }
 }
-

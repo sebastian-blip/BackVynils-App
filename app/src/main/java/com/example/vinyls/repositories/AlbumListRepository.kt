@@ -27,25 +27,31 @@ class AlbumListRepository(private val context: Context) {
 
     private val cache = mutableListOf<Album>()
 
-    suspend fun getAlbums(page: Int, pageSize: Int = 6): List<Album> = withContext(Dispatchers.IO) {
-        if (cache.isNotEmpty()) {
-            return@withContext cache.drop((page - 1) * pageSize).take(pageSize)
-        }
-
-        return@withContext suspendCancellableCoroutine { continuation ->
+    suspend fun refreshCache() = withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine { continuation ->
             NetworkServiceAdapter.getInstance(context).getAlbums(
                 onSuccess = { jsonArray ->
                     val allAlbums = parseAlbums(jsonArray)
                     cache.clear()
                     cache.addAll(allAlbums)
-                    val pagedAlbums = allAlbums.drop((page - 1) * pageSize).take(pageSize)
-                    continuation.resume(pagedAlbums, null)
+                    continuation.resume(Unit, null)
                 },
                 onError = {
                     continuation.resumeWithException(it)
                 }
             )
         }
+    }
+
+    suspend fun getAlbums(page: Int, pageSize: Int = 6): List<Album> = withContext(Dispatchers.IO) {
+        if (cache.isEmpty()) {
+            refreshCache()
+        }
+        return@withContext cache.drop((page - 1) * pageSize).take(pageSize)
+    }
+
+    fun getAllCachedAlbums(): List<Album> {
+        return cache.toList()
     }
 
     private fun parseAlbums(jsonArray: JSONArray): List<Album> {
