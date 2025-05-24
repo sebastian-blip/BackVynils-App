@@ -49,8 +49,10 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showModal by remember { mutableStateOf(false) }
     var showConfirmDialog by remember { mutableStateOf(false) }
+    var selectedPremio by remember { mutableStateOf<DetalleArtistaViewModel.Premio?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSuccessSnackbar by remember { mutableStateOf(false) }
 
-    var selectedPremio by remember { mutableStateOf<Premio?>(null) }
 
     LaunchedEffect(artistaId) {
         viewModel.cargarArtista(artistaId)
@@ -121,7 +123,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 Button(
                     onClick = {
-                        selectedPremio = null // <-- Reinicia el premio seleccionado si se selecciona continuar
+                        selectedPremio = selectedPremio // <-- Reinicia el premio seleccionado si se selecciona continuar
                         showModal = false
                         showConfirmDialog = true
                     },
@@ -144,17 +146,19 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
         }
     }
 
-    if (showConfirmDialog) {
+    if (showConfirmDialog && selectedPremio != null) {
         AlertDialog(
             onDismissRequest = {
                 showConfirmDialog = false
             },
             confirmButton = {
                 TextButton(onClick = {
+                    viewModel.asociarPremioAlArtista(artistaId, selectedPremio!!)
                     showConfirmDialog = false
                     selectedPremio = null
-                    // Agregar lógica para asociar el premio al artista
-                }) {
+                    viewModel.cargarArtista(artistaId) // Refresh de la información del artista después de que se asocia un premio
+                    showSuccessSnackbar = true
+                 }) {
                     Text("Aceptar", color = Color(0xFF4CAF50))
                 }
             },
@@ -179,10 +183,16 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
         )
     }
 
-
+    LaunchedEffect(showSuccessSnackbar) {
+        if (showSuccessSnackbar) {
+            snackbarHostState.showSnackbar("Premio asociado exitosamente")
+            showSuccessSnackbar = false
+        }
+    }
 
     Scaffold(
         containerColor = Color.Black,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             DetalleHeader(navController)
         },
@@ -377,7 +387,6 @@ fun PremioItem(premio: Premio) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(premio.name, color = Color.White, fontWeight = FontWeight.Medium)
         Text("Organización: ${premio.organization}", color = Color.Gray)
-        Text(premio.description, color = Color.Gray)
     }
 }
 

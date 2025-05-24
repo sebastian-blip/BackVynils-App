@@ -33,29 +33,33 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                     birthDate = json.getString("birthDate")
                     albums = json.getJSONArray("albums").toAlbumList()
 
-                    val premiosTemp = mutableListOf<Premio>()
                     val performerPrizesArray = json.getJSONArray("performerPrizes")
+                    val premioIds = mutableListOf<Int>()
 
                     for (i in 0 until performerPrizesArray.length()) {
                         val premioId = performerPrizesArray.getJSONObject(i).getInt("id")
-                        repository.getPremioPorId(
-                            premioId,
-                            onSuccess = { premioJson ->
-                                val premio = Premio(
+                        premioIds.add(premioId)
+                    }
+
+                    // Corrutina para cargar los premios
+                    viewModelScope.launch {
+                        val premiosCargados = premioIds.mapNotNull { premioId ->
+                            try {
+                                val premioJson = repository.getPremioPorIdSuspend(premioId)
+                                Premio(
+                                    id = premioJson.getInt("id"),
                                     name = premioJson.getString("name"),
                                     organization = premioJson.getString("organization"),
                                     description = premioJson.getString("description")
                                 )
-                                premiosTemp.add(premio)
-                                premios = premiosTemp.toList()
-                            },
-                            onError = {
-                                println("Error al cargar premio con ID $premioId: ${it.message}")
+                            } catch (e: Exception) {
+                                println("Error al cargar premio con ID $premioId: ${e.message}")
+                                null
                             }
-                        )
+                        }
+                        premios = premiosCargados
+                        cargando = false
                     }
-
-                    cargando = false
                 },
                 onError = {
                     println("Error al cargar artista: ${it.message}")
@@ -66,8 +70,18 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
     }
 
     // Modelos internos
-    data class Album(val name: String, val releaseDate: String, val cover: String)
-    data class Premio(val name: String, val organization: String, val description: String)
+    data class Album(
+        val name: String,
+        val releaseDate: String,
+        val cover: String
+    )
+
+    data class Premio(
+        val id: Int,
+        val name: String,
+        val organization: String,
+        val description: String,
+        val premiationDate: String? = null)
 
     // Función auxiliar para parsear álbumes
     private fun JSONArray.toAlbumList(): List<Album> {
@@ -93,6 +107,7 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                     for (i in 0 until premiosArray.length()) {
                         val premioJson = premiosArray.getJSONObject(i)
                         val premio = Premio(
+                            id = premioJson.getInt("id"),
                             name = premioJson.getString("name"),
                             organization = premioJson.getString("organization"),
                             description = premioJson.getString("description")
@@ -103,6 +118,23 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                 },
                 onError = {
                     println("Error al cargar premios disponibles: ${it.message}")
+                }
+            )
+        }
+    }
+
+    fun asociarPremioAlArtista(artistaId: Int, premio: Premio) {
+        viewModelScope.launch {
+            val premiationDate = premio.premiationDate ?: "2024-12-31T00:00:00-05:00"
+            repository.asociarPremio(
+                artistaId = artistaId,
+                premioId = premio.id,
+                premiationDate = premiationDate,
+                onSuccess = {
+                    cargarArtista(artistaId)
+                },
+                onError = {
+                    println("Error al asociar premio: ${it.message}")
                 }
             )
         }
