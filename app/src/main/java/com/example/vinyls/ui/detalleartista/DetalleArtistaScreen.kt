@@ -48,6 +48,8 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     val scroll = rememberScrollState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showModal by remember { mutableStateOf(false) }
+    var showConfirmDialog by remember { mutableStateOf(false) }
+
 
     val premiosFake = listOf(
         "Premio Grammy 2020",
@@ -72,7 +74,10 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
     if (showModal) {
         ModalBottomSheet(
-            onDismissRequest = { showModal = false },
+            onDismissRequest = {
+                selectedPremio = null // Reiniciar el premio seleccionado si se cierra el modal
+                showModal = false
+            },
             sheetState = sheetState,
             containerColor = Color.DarkGray,
             contentColor = Color.White,
@@ -131,19 +136,65 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 Button(
                     onClick = {
+                        selectedPremio = null // <-- Reinicia el premio seleccionado si se selecciona continuar
                         showModal = false
+                        showConfirmDialog = true
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFE57373),
+                        contentColor = Color.White,
+                        disabledContainerColor = Color.Gray,
+                        disabledContentColor = Color.LightGray
+                    ),
+                    enabled = selectedPremio != null,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
                 ) {
-                    Text("Continue", fontWeight = FontWeight.Bold)
+                    Text("Continuar", fontWeight = FontWeight.Bold)
                 }
+
             }
         }
     }
+
+    if (showConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showConfirmDialog = false
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showConfirmDialog = false
+                    selectedPremio = null
+                    // Agregar lógica para asociar el premio al artista
+                }) {
+                    Text("Aceptar", color = Color(0xFF4CAF50))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showConfirmDialog = false
+                }) {
+                    Text("Cancelar", color = Color(0xFFF44336))
+                }
+            },
+            title = {
+                Text("Asociar premio", color = Color.White)
+            },
+            text = {
+                Text(
+                    "¿Está seguro que desea agregar este premio al artista?",
+                    color = Color.White
+                )
+            },
+            containerColor = Color(0xFF1C1B1F),
+            shape = RoundedCornerShape(20.dp)
+        )
+    }
+
+
 
     Scaffold(
         containerColor = Color.Black,
