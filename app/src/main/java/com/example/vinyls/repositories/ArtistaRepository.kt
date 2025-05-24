@@ -18,4 +18,13 @@ class ArtistaRepository(application: Application) {
     fun getPremioPorId(id: Int, onSuccess: (JSONObject) -> Unit, onError: (Exception) -> Unit) {
         networkAdapter.getPremioById(id, onSuccess, onError)
     }
+
+    fun getPremios(
+        onSuccess: (org.json.JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        networkAdapter.getAllPremios(onSuccess, onError)
+    }
+
+
 }

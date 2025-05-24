@@ -241,8 +241,18 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
-
-
+    fun getAllPremios(
+        onSuccess: (JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}prizes"
+        val request = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response -> onSuccess(response) },
+            { error -> onError(error) }
+        )
+        requestQueue.add(request)
+    }
 
 
 

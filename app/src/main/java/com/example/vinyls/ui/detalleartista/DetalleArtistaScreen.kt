@@ -50,23 +50,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     var showModal by remember { mutableStateOf(false) }
     var showConfirmDialog by remember { mutableStateOf(false) }
 
-
-    val premiosFake = listOf(
-        "Premio Grammy 2020",
-        "Billboard Music Award 2018",
-        "MTV Europe Music Award 2017",
-        "Latin Grammy 2019",
-        "Premio Lo Nuestro 2021",
-        "American Music Award 2016",
-        "Premio Grammy 2021",
-        "Billboard Music Award 2318",
-        "MTV Europe Music Award 2317",
-        "Latin Grammy 2319",
-        "Premio Lo Nuestro 2321",
-        "American Music Award 2316",
-    )
-
-    var selectedPremio by remember { mutableStateOf<String?>(null) }
+    var selectedPremio by remember { mutableStateOf<Premio?>(null) }
 
     LaunchedEffect(artistaId) {
         viewModel.cargarArtista(artistaId)
@@ -98,12 +82,13 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                         .padding(bottom = 16.dp)
                 )
 
+                val premios = viewModel.premiosDisponibles
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f, fill = false)
                 ) {
-                    items(premiosFake) { premio ->
+                    items(premios) { premio ->
                         val isSelected = selectedPremio == premio
                         val backgroundColor = if (isSelected) Color.Black else Color.White
                         val contentColor = if (isSelected) Color.White else Color.Black
@@ -124,7 +109,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = premio,
+                                text = premio.name,
                                 color = contentColor,
                                 fontSize = 15.sp, // Tamaño del  nombre de un premio
                             )
@@ -251,6 +236,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable {
+                            viewModel.obtenerPremiosDisponibles()
                             showModal = true
                         }
                     ) {

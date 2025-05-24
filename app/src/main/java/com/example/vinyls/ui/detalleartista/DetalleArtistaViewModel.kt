@@ -19,6 +19,7 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
     var albums by mutableStateOf<List<Album>>(emptyList())
     var premios by mutableStateOf<List<Premio>>(emptyList())
     var cargando by mutableStateOf(false)
+    var premiosDisponibles by mutableStateOf<List<Premio>>(emptyList())
 
     fun cargarArtista(id: Int = 1) {
         cargando = true
@@ -83,6 +84,30 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
         }
         return list
     }
+
+    fun obtenerPremiosDisponibles() {
+        viewModelScope.launch {
+            repository.getPremios(
+                onSuccess = { premiosArray ->
+                    val premiosTemp = mutableListOf<Premio>()
+                    for (i in 0 until premiosArray.length()) {
+                        val premioJson = premiosArray.getJSONObject(i)
+                        val premio = Premio(
+                            name = premioJson.getString("name"),
+                            organization = premioJson.getString("organization"),
+                            description = premioJson.getString("description")
+                        )
+                        premiosTemp.add(premio)
+                    }
+                    premiosDisponibles = premiosTemp
+                },
+                onError = {
+                    println("Error al cargar premios disponibles: ${it.message}")
+                }
+            )
+        }
+    }
+
 }
 
 
