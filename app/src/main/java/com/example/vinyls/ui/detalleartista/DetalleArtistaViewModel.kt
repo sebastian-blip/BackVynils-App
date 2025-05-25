@@ -62,7 +62,8 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
             repository.getArtista(
                 id,
                 onSuccess = { json ->
-                    println("JSON completo del artista:\n${json.toString(2)}")
+
+
                     nombre = json.getString("name")
                     descripcion = json.getString("description")
                     imagenUrl = json.getString("image")
@@ -79,7 +80,6 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
 
                             val allPremios = obtenerPremiosDisponiblesSuspend() // <-- carga todos los premios
                             val premiosCargados = obtenerPremiosConFecha(allPremios, performerPrizesArray)
-                            println(premiosCargados)// <-- filtra y enriquece
 
                             _premios.clear()
                             _premios.addAll(premiosCargados)
