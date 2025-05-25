@@ -241,8 +241,48 @@ class NetworkServiceAdapter private constructor(context: Context) {
         requestQueue.add(request)
     }
 
+    fun getAllPremios(
+        onSuccess: (JSONArray) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}prizes"
+        val request = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            { response -> onSuccess(response) },
+            { error -> onError(error) }
+        )
+        requestQueue.add(request)
+    }
 
+    fun asociarPremioConArtista(
+        premioId: Int,
+        artistaId: Int,
+        premiationDate: String,
+        onSuccess: (JSONObject) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val url = "${BASE_URL}prizes/$premioId/musicians/$artistaId"
 
+        val body = JSONObject().apply {
+            put("premiationDate", premiationDate)
+        }
+
+        val request = JsonObjectRequest(
+            Request.Method.POST,
+            url,
+            body,
+            { response ->
+                Log.d("asociarPremio", "Premio asociado: $response")
+                onSuccess(response)
+            },
+            { error ->
+                Log.e("asociarPremio", "Error al asociar premio: ${error.message}")
+                onError(Exception(error.message ?: "Error desconocido al asociar premio"))
+            }
+        )
+
+        requestQueue.add(request)
+    }
 
 
 
