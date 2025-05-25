@@ -45,4 +45,14 @@
     <string name="error_crear_premio">❌ Error: %1$s</string>
     <string name="logo_vinyls">Logo de Vinyls</string>
     <string name="menu">Menú</string>
+    <!-- DetalleArtistaScreen -->
+    <string name="detalle_biografia">Biografía</string>
+    <string name="detalle_ir_atras">← Volver a lista de artistas</string>
+    <string name="detalle_agregar_album">Agregar álbum</string>
+    <string name="detalle_agregar_premio">Agregar premio</string>
+    <string name="detalle_anterior">Anterior</string>
+    <string name="detalle_siguiente">Siguiente</string>
+    <string name="foto_artista_desc">Foto del artista</string>
+    <string name="albunes_tab">Álbumes</string>
+    <string name="premios_tab">Premios</string>
 </resources>
