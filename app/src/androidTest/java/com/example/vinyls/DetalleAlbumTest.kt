@@ -23,7 +23,7 @@ class DetalleAlbumTest {
             composeTestRule.onAllNodesWithText("Albumes").fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Albumes").performClick()
 
         // Espera a que cargue la lista de álbumes
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -47,7 +47,7 @@ class DetalleAlbumTest {
             composeTestRule.onAllNodesWithText("Albumes").fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Albumes").performClick()
 
         // Espera a que cargue la lista de álbumes
         composeTestRule.waitUntil(timeoutMillis = 5000) {
