@@ -35,6 +35,7 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -428,6 +429,7 @@ fun AddAlbumButton(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+            .testTag("AddAlbumButton")
             .clickable {
                 navController.navigate("agregar_album_artista/${artistaId}/${artistaNombre}/${Uri.encode(artistaImagenUrl)}")
             }

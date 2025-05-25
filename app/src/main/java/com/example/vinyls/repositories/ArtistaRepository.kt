@@ -6,6 +6,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import org.json.JSONArray
+import kotlin.coroutines.suspendCoroutine
+
+
 
 class ArtistaRepository(application: Application) {
     private val networkAdapter = NetworkServiceAdapter.getInstance(application)
@@ -28,6 +32,19 @@ class ArtistaRepository(application: Application) {
     ) {
         networkAdapter.getAllPremios(onSuccess, onError)
     }
+
+    // En el Repository
+    suspend fun getPremiosSuspend(): JSONArray = suspendCoroutine { continuation ->
+        getPremios(
+            onSuccess = { premiosArray ->
+                continuation.resume(premiosArray)
+            },
+            onError = { error ->
+                continuation.resumeWithException(error)
+            }
+        )
+    }
+
 
     fun asociarPremio(
         artistaId: Int,

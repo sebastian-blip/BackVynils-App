@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vinyls.repositories.ArtistaRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -23,6 +24,38 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
     private val _premios = mutableStateListOf<Premio>()
     val premios: List<Premio> get() = _premios
 
+
+
+    fun obtenerPremiosConFecha(
+        premiosDisponibles: List<Premio>,
+        performerPrizesJsonArray: JSONArray
+    ): List<Premio> {
+        // Crear un mapa de ID de performerPrize del artista -> premiationDate
+        val premiosDelArtista = mutableMapOf<Int, String>()
+
+        for (i in 0 until performerPrizesJsonArray.length()) {
+            val obj = performerPrizesJsonArray.getJSONObject(i)
+            val id = obj.getInt("id")
+            val fecha = obj.getString("premiationDate")
+            premiosDelArtista[id] = fecha
+        }
+
+        // Filtrar y enriquecer premios que contengan algún performerPrize del artista
+        return premiosDisponibles.mapNotNull { premio ->
+            // Buscar si alguno de los performerPrizes del premio está en los del artista
+            val match = premio.performerPrizes.firstOrNull { it.id in premiosDelArtista }
+
+            match?.let {
+                // Usamos la fecha correspondiente al ID encontrado
+                val fecha = premiosDelArtista[it.id]
+                premio.copy(premiationDate = fecha)
+            }
+        }
+    }
+
+
+
+
     fun cargarArtista(id: Int = 1) {
         cargando = true
         viewModelScope.launch {
@@ -37,35 +70,24 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
                     albums = json.getJSONArray("albums").toAlbumList()
 
                     val performerPrizesArray = json.getJSONArray("performerPrizes")
-                    println("performerPrizes: $performerPrizesArray")
 
                     // 👇 Ejecutamos carga de premios con suspend dentro de contexto adecuado
                     viewModelScope.launch {
-                        val premiosCargados = withContext(kotlinx.coroutines.Dispatchers.IO) {
-                            (0 until performerPrizesArray.length()).mapNotNull { i ->
-                                val premioObj = performerPrizesArray.getJSONObject(i)
-                                val premioId = premioObj.getInt("id")
-                                val premiationDate = premioObj.optString("premiationDate", null)
+                        cargando = true
 
-                                try {
-                                    val premioJson = repository.getPremioPorIdSuspend(premioId)
-                                    Premio(
-                                        id = premioJson.getInt("id"),
-                                        name = premioJson.getString("name"),
-                                        organization = premioJson.getString("organization"),
-                                        description = premioJson.getString("description"),
-                                        premiationDate = premiationDate
-                                    )
-                                } catch (e: Exception) {
-                                    println("Error al cargar premio con ID $premioId: ${e.message}")
-                                    null
-                                }
-                            }
+                        try {
+
+                            val allPremios = obtenerPremiosDisponiblesSuspend() // <-- carga todos los premios
+                            val premiosCargados = obtenerPremiosConFecha(allPremios, performerPrizesArray)
+                            println(premiosCargados)// <-- filtra y enriquece
+
+                            _premios.clear()
+                            _premios.addAll(premiosCargados)
+                        } catch (e: Exception) {
+                            println("Error al cargar premios: ${e.message}")
+                        } finally {
+                            cargando = false
                         }
-
-                        _premios.clear()
-                        _premios.addAll(premiosCargados)
-                        cargando = false
                     }
                 },
                 onError = {
@@ -84,12 +106,18 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
         val cover: String
     )
 
+    data class PerformerPrize(
+        val id: Int,
+        val premiationDate: String
+    )
+
     data class Premio(
         val id: Int,
         val name: String,
         val organization: String,
         val description: String,
-        val premiationDate: String? = null)
+        val premiationDate: String? = null,
+        val performerPrizes: List<PerformerPrize> = emptyList())
 
     // Función auxiliar para parsear álbumes
     private fun JSONArray.toAlbumList(): List<Album> {
@@ -106,6 +134,41 @@ class DetalleArtistaViewModel(application: Application) : AndroidViewModel(appli
         }
         return list
     }
+
+    suspend fun obtenerPremiosDisponiblesSuspend(): List<Premio> = withContext(Dispatchers.IO) {
+        val premiosArray = repository.getPremiosSuspend()
+        val premiosTemp = mutableListOf<Premio>()
+
+        for (i in 0 until premiosArray.length()) {
+            val premioJson = premiosArray.getJSONObject(i)
+
+            // Obtener performerPrizes
+            val performerPrizesJsonArray = premioJson.optJSONArray("performerPrizes") ?: JSONArray()
+            val performerPrizes = mutableListOf<PerformerPrize>()
+            for (j in 0 until performerPrizesJsonArray.length()) {
+                val prizeJson = performerPrizesJsonArray.getJSONObject(j)
+                val performerPrize = PerformerPrize(
+                    id = prizeJson.getInt("id"),
+                    premiationDate = prizeJson.getString("premiationDate")
+                )
+                performerPrizes.add(performerPrize)
+            }
+
+            // Construir el premio
+            val premio = Premio(
+                id = premioJson.getInt("id"),
+                name = premioJson.getString("name"),
+                organization = premioJson.getString("organization"),
+                description = premioJson.getString("description"),
+                performerPrizes = performerPrizes
+            )
+
+            premiosTemp.add(premio)
+        }
+
+        premiosTemp
+    }
+
 
     fun obtenerPremiosDisponibles() {
         viewModelScope.launch {
