@@ -26,7 +26,11 @@ import com.example.vinyls.R
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Album
 import com.example.vinyls.ui.detalleartista.DetalleArtistaViewModel.Premio
 import android.net.Uri
-import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -34,6 +38,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     val context = LocalContext.current
@@ -42,13 +47,154 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
     )
 
     val scroll = rememberScrollState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showModal by remember { mutableStateOf(false) }
+    var showConfirmDialog by remember { mutableStateOf(false) }
+    var selectedPremio by remember { mutableStateOf<DetalleArtistaViewModel.Premio?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSuccessSnackbar by remember { mutableStateOf(false) }
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
 
     LaunchedEffect(artistaId) {
         viewModel.cargarArtista(artistaId)
     }
 
+    if (showModal) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                selectedPremio = null // Reiniciar el premio seleccionado si se cierra el modal
+                showModal = false
+            },
+            sheetState = sheetState,
+            containerColor = Color.DarkGray,
+            contentColor = Color.White,
+            scrimColor = Color.Black.copy(alpha = 0.7f)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 400.dp) // Altura del modal
+                    .padding(start = 12.dp, end = 12.dp, top = 2.dp, bottom = 12.dp) //Distancia entre el borde superior del modal y el titulo
+            ) {
+                Text(
+                    text = "Agregar premios",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 16.dp)
+                )
+
+                val premios = viewModel.premiosDisponibles
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = false)
+                ) {
+                    items(premios) { premio ->
+                        val isSelected = selectedPremio == premio
+                        val backgroundColor = if (isSelected) Color.Black else Color.White
+                        val contentColor = if (isSelected) Color.White else Color.Black
+                        val borderColor = if (isSelected) Color.White else Color.Transparent
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp)
+                                .clickable { selectedPremio = premio }
+                                .border(
+                                    width = 2.dp,
+                                    color = borderColor,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .background(backgroundColor, shape = RoundedCornerShape(12.dp))
+                                .padding(vertical = 14.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = premio.name,
+                                color = contentColor,
+                                fontSize = 15.sp, // Tamaño del  nombre de un premio
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        selectedPremio = selectedPremio // <-- Reinicia el premio seleccionado si se selecciona continuar
+                        showModal = false
+                        showConfirmDialog = true
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFE57373),
+                        contentColor = Color.White,
+                        disabledContainerColor = Color.Gray,
+                        disabledContentColor = Color.LightGray
+                    ),
+                    enabled = selectedPremio != null,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Text("Continuar", fontWeight = FontWeight.Bold)
+                }
+
+            }
+        }
+    }
+
+    if (showConfirmDialog && selectedPremio != null) {
+        AlertDialog(
+            onDismissRequest = {
+                showConfirmDialog = false
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.asociarPremioAlArtista(artistaId, selectedPremio!!)
+                    showConfirmDialog = false
+                    selectedPremio = null
+                    showSuccessSnackbar = true
+                    selectedTabIndex = 1
+                 }) {
+                    Text("Aceptar", color = Color(0xFF4CAF50))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showConfirmDialog = false
+                }) {
+                    Text("Cancelar", color = Color(0xFFF44336))
+                }
+            },
+            title = {
+                Text("Asociar premio", color = Color.White)
+            },
+            text = {
+                Text(
+                    "¿Está seguro que desea agregar este premio al artista?",
+                    color = Color.White
+                )
+            },
+            containerColor = Color(0xFF1C1B1F),
+            shape = RoundedCornerShape(20.dp)
+        )
+    }
+
+    LaunchedEffect(showSuccessSnackbar) {
+        if (showSuccessSnackbar) {
+            snackbarHostState.showSnackbar("Premio asociado exitosamente")
+            showSuccessSnackbar = false
+        }
+    }
+
     Scaffold(
         containerColor = Color.Black,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             DetalleHeader(navController)
         },
@@ -102,7 +248,8 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable {
-                            // Implementar logica para abrir modal
+                            viewModel.obtenerPremiosDisponibles()
+                            showModal = true
                         }
                     ) {
                         Icon(
@@ -146,7 +293,7 @@ fun DetalleArtistaScreen(navController: NavController, artistaId: Int) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                var selectedTabIndex by remember { mutableStateOf(0) }
+                //var selectedTabIndex by remember { mutableStateOf(0) }
                 val tabs = listOf("Álbumes", "Premios")
 
                 TabRow(
@@ -242,7 +389,6 @@ fun PremioItem(premio: Premio) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(premio.name, color = Color.White, fontWeight = FontWeight.Medium)
         Text("Organización: ${premio.organization}", color = Color.Gray)
-        Text(premio.description, color = Color.Gray)
     }
 }
 
@@ -283,10 +429,8 @@ fun AddAlbumButton(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-
             .testTag("AddAlbumButton")
             .clickable {
-                Log.d("AddAlbumButton", "Clicked. ID=$artistaId")
                 navController.navigate("agregar_album_artista/${artistaId}/${artistaNombre}/${Uri.encode(artistaImagenUrl)}")
             }
     ) {
@@ -294,8 +438,7 @@ fun AddAlbumButton(
             imageVector = Icons.Default.Add,
             contentDescription = "Agregar álbum",
             tint = Color.Red,
-            modifier = Modifier
-                .size(32.dp)
+            modifier = Modifier.size(32.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text("Agregar álbum", color = Color.White)
