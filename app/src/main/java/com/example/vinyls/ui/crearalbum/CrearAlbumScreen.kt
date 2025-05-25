@@ -32,6 +32,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
 import androidx.navigation.NavController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 
 
 
@@ -48,6 +51,7 @@ fun CrearAlbumScreen(navController: NavController) {
     var URLObligatoriaError by remember { mutableStateOf(false) }
     var URLError by remember { mutableStateOf(false) }
 
+
     val context = LocalContext.current
     val viewModel: CrearAlbumViewModel = viewModel(
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application)
@@ -55,6 +59,19 @@ fun CrearAlbumScreen(navController: NavController) {
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+
+    val textoNombreAlbum = stringResource(R.string.nombre)
+    val textoUrlPortada = stringResource(R.string.url_portada)
+    val textoFechaLanzamiento = stringResource(R.string.fecha_lanzamiento_label)
+    val textDescripcion = stringResource(R.string.descripcion)
+    val closeMenuGen = stringResource(R.string.menu_cerradp_gen)
+    val openMenuGen =  stringResource(R.string.menu_abierto_gen)
+    val closeMenuDis = stringResource(R.string.menu_cerradp_dis)
+    val openMenuDis =  stringResource(R.string.menu_abierto_dis)
+    val createAlbum =  stringResource(R.string.crear_album)
+    val textBack =  stringResource(R.string.volver_lista_albumes)
+    val textPortada = stringResource(R.string.portada_album)
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -76,7 +93,7 @@ fun CrearAlbumScreen(navController: NavController) {
             ){
 
                 Text(
-                    text = "Crear Álbum",
+                    text = stringResource(R.string.crear_album),
                     color = Color(0xFFFF6B6B),
                     style = MaterialTheme.typography.headlineMedium
                 )
@@ -85,7 +102,7 @@ fun CrearAlbumScreen(navController: NavController) {
 
                 AsyncImage(
                     model = viewModel.cover,
-                    contentDescription = "Portada del álbum",
+                    contentDescription =  textPortada,
                     modifier = Modifier
                         .size(220.dp)
                         .clip(CircleShape),
@@ -102,26 +119,29 @@ fun CrearAlbumScreen(navController: NavController) {
                         nombreObligatorioError = it.trim().isEmpty()
                         nombreError = !nombreObligatorioError && it.length > 50
                     },
-                    label = { Text("Nombre")},
+                    label = { Text(stringResource(R.string.nombre))},
                     isError = nombreError || nombreObligatorioError,
                     supportingText = {
                         if (nombreObligatorioError) {
                             Text(
-                                text = "Campo obligatorio",
+                                text = stringResource(R.string.campo_obligatorio),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         } else if (nombreError) {
                                 Text(
-                                text = "El nombre supera la longitud permitida",
+                                text = stringResource(R.string.nombre_supera_longitud),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+
+                    modifier = Modifier
+                        .semantics { contentDescription = textoNombreAlbum }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -144,26 +164,28 @@ fun CrearAlbumScreen(navController: NavController) {
                         URLObligatoriaError = it.trim().isEmpty()
                         URLError = !URLObligatoriaError && it.length > 500
                     },
-                    label = { Text("URL de la portada") },
+                    label = { Text(stringResource(R.string.url_portada)) },
                     isError = URLObligatoriaError || URLError ,
                     supportingText = {
                         if (URLObligatoriaError) {
                             Text(
-                                text = "Campo obligatorio",
+                                text = stringResource(R.string.campo_obligatorio),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         } else if (URLError) {
                             Text(
-                                text = "La URL supera la longitud permitida",
+                                text = stringResource(R.string.url_supera_longitud),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = textoUrlPortada }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -182,8 +204,10 @@ fun CrearAlbumScreen(navController: NavController) {
                 OutlinedTextField(
                     value = viewModel.releaseDate,
                     onValueChange = { viewModel.releaseDate = it },
-                    label = { Text("Fecha de lanzamiento (YYYY-MM-DD)") },
-                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.fecha_lanzamiento_label)) },
+                    modifier = Modifier
+                        .semantics { contentDescription = textoFechaLanzamiento }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -206,26 +230,28 @@ fun CrearAlbumScreen(navController: NavController) {
                         descripcionObligatoriaError = it.trim().isEmpty()
                         descripcionError = !descripcionObligatoriaError && it.length > 150
                     },
-                    label = { Text("Descripción") },
+                    label = { Text(stringResource(R.string.descripcion)) },
                     isError = descripcionObligatoriaError || descripcionError,
                     supportingText = {
                         if (descripcionObligatoriaError) {
                             Text(
-                                text = "Campo obligatorio",
+                                text = stringResource(R.string.campo_obligatorio),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         } else if (descripcionError) {
                             Text(
-                                text = "La descripción supera la longitud permitida",
+                                text = stringResource(R.string.descripcion_supera_longitud),
                                 color = Color(0xFFFF8C69),
                                 style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .semantics { contentDescription = textDescripcion }
+                        .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         errorTextColor = Color.Black,
                         errorContainerColor = Color.White,
@@ -247,20 +273,27 @@ fun CrearAlbumScreen(navController: NavController) {
                         value = viewModel.genre,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Genero") },
+                        label = { Text(stringResource(R.string.genero)) },
                         trailingIcon = {
                             IconButton(
                                 onClick = { expandedGen = !expandedGen },
                                 modifier = Modifier.testTag("openDropdowGen")) {
                                 Icon(
                                     imageVector = if (expandedGen) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                                    contentDescription = "Abrir menú"
+                                    contentDescription = stringResource(R.string.abrir_menu)
                                 )
                             }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { expandedGen = !expandedGen },
+                            .clickable { expandedGen = !expandedGen }
+                            .semantics {
+                                contentDescription = if (expandedGen) {
+                                    openMenuGen
+                                } else {
+                                    closeMenuGen
+                                }
+                            },
                         colors = OutlinedTextFieldDefaults.colors(
                             errorTextColor = Color.Black,
                             errorContainerColor = Color.White,
@@ -274,6 +307,8 @@ fun CrearAlbumScreen(navController: NavController) {
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White
                         )
+
+
                     )
 
                     DropdownMenu(
@@ -300,18 +335,25 @@ fun CrearAlbumScreen(navController: NavController) {
                         value = viewModel.recordLabel,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Sello discográfico") },
+                        label = { Text(stringResource(R.string.sello_discografico)) },
                         trailingIcon = {
                             IconButton(
                                 onClick = { expanded = !expanded },
                                 modifier = Modifier.testTag("openDropdowRecor")) {
                                 Icon(
                                     imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                                    contentDescription = "Abrir menú"
+                                    contentDescription = stringResource(R.string.abrir_menu)
                                 )
                             }
                         },
                         modifier = Modifier
+                            .semantics {
+                                contentDescription = if (expandedGen) {
+                                    openMenuDis
+                                } else {
+                                    closeMenuDis
+                                }
+                            }
                             .fillMaxWidth()
                             .clickable { expanded = !expanded },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -369,17 +411,19 @@ fun CrearAlbumScreen(navController: NavController) {
                     modifier = Modifier
                     .fillMaxWidth()
                     .testTag("botonCrearAlbum")
+                    .semantics { contentDescription = createAlbum }
                 ) {
-                    Text("Crear Álbum", color = Color.White)
+                    Text(stringResource(R.string.crear_album), color = Color.White)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "← Volver a lista de álbumes",
+                    text = stringResource(R.string.volver_lista_albumes),
                     color = Color(0xFFFF6B6B),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
+                        .semantics { contentDescription = textBack}
                         .clickable {
                             navController.navigate("listar_albumns")
                         }
@@ -388,3 +432,4 @@ fun CrearAlbumScreen(navController: NavController) {
         }
     }
 }
+

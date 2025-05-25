@@ -25,11 +25,11 @@ class ListarAlbumnsTest {
         }
 
         // Ir a pantalla de creación
-        composeTestRule.onNodeWithContentDescription("addAlbumButton").performClick()
+        composeTestRule.onNodeWithContentDescription("Ir a sección Albumes").performClick()
         composeTestRule.waitUntil(5_000) {
-            composeTestRule.onAllNodesWithContentDescription("Agregar álbum").fetchSemanticsNodes().isNotEmpty()
+            composeTestRule.onAllNodesWithContentDescription("Crear Álbum").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithContentDescription("Agregar álbum").performClick()
+        composeTestRule.onNodeWithContentDescription("Crear Álbum").performClick()
 
         // Esperar a que cargue la pantalla
         composeTestRule.waitUntil(10_000) {
@@ -67,7 +67,7 @@ class ListarAlbumnsTest {
 
         composeTestRule.waitUntil(timeoutMillis = 5_000) {
             composeTestRule
-                .onAllNodesWithContentDescription("Agregar álbum")
+                .onAllNodesWithContentDescription("Crear Álbum")
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
